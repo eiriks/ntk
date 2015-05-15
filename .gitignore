@@ -2,6 +2,9 @@
 __pycache__/
 *.py[cod]
 
+*.zip
+nrk_names2gender.py
+
 # C extensions
 *.so
 
