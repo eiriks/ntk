@@ -1,4 +1,4 @@
-# Nnavn-til-kjønn
+# Navn-til-kjønn
 Quick-fix for å konvertere norske egennavn til kjønn (mann/kvinne).
 
 
@@ -15,5 +15,11 @@ Omtrent slik er den ment å brukes:
 ('Ulerikka', u'kvinne', u'predictor')
 ```
 
+Navnet `Eirik` ble funnet i listen, mens `Ulerikka` ikke ligger i listen, men ble predikert av maskin-lærings-algoritmen.
+
 
 Prosjektet er basert på løse tråder herfra: https://github.com/eiriks/genderPredictor
+
+Jeg har noe data på hvor nøyaktig dette er et-eller-annet sted, som jeg skal hoste opp neste gang jeg må rapportere nøyaktighet (som helt sikkert skjer en-gang snart).
+
+PS: Hvis du har noen alternative løsningsforslag til denne oppgaven ("gi meg ditt navn, og jeg skal si deg hvilket kjønn du er"), gi gjerne en lyd.
