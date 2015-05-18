@@ -24,7 +24,6 @@ Accuracy: 0.808889
 
 
 
-
 Status: de features som hentes ut som betydningsfulle er ikke veldig gode.
 
 Tiltak: bruk ordlister (lookup) på navn som ikke brukes på begge kjønn først
