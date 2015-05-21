@@ -111,7 +111,7 @@ class name2gender:
         return list(set(a) & set(b))   # [u'Inge\n', u'Kim\n', u'Tonny\n', u'Thanh\n', u'Marian\n'] ?? Har sjekket, det stemmer...
 
     def last_jenter(self):
-        jenter = open("data/jentenavn.txt", 'U') #.read() # adda Adalheidur 11juni2014
+        jenter = open("data/jentenavn.txt", 'U')
         self.jente_liste = []
         for j in jenter:
             self.jente_liste.append(j.decode("utf8").rstrip())
@@ -145,7 +145,10 @@ class name2gender:
         if "-" in name:             # if dual name with hyphen, split name and use the first first-name.
             name = name.split("-")[0]
 
-            #print name
+        # Uppercase fist letter (in case its not already)
+        name = name.capitalize()
+
+
         if name in self.jenter:
             return (name, u"kvinne", u'list_lookup')
         elif name in self.gutter:
@@ -210,7 +213,7 @@ if __name__ == '__main__':
     print "\n\n\nNorske navn: \n" # de 100 vanligste dama og herrenavn i norge 2013
     kvinner = [u'Anne', u'Inger', u'Kari', u'Marit', u'Ingrid', u'Liv', u'Eva', u'Berit', u'Astrid', u'Bjørg', u'Hilde', u'Anna', u'Solveig', u'Marianne', u'Randi', u'Ida', u'Nina', u'Maria', u'Elisabeth', u'Kristin', u'Bente', u'Heidi', u'Silje', u'Hanne', u'Gerd', u'Linda', u'Tone', u'Tove', u'Elin', u'Anita', u'Wenche', u'Ragnhild', u'Camilla', u'Ellen', u'Karin', u'Hege', u'Ann', u'Else', u'Mona', u'Marie', u'Aud', u'Monica', u'Julie', u'Kristine', u'Turid', u'Laila', u'Reidun', u'Stine', u'Helene', u'Åse', u'Jorunn', u'Sissel', u'Mari', u'Line', u'Lene', u'Mette', u'Grethe', u'Trine', u'Unni', u'Malin', u'Grete', u'Thea', u'Gunn', u'Emma', u'May', u'Ruth', u'Lise', u'Emilie', u'Anette', u'Kirsten', u'Sara', u'Nora', u'Linn', u'Eli', u'Siri', u'Cecilie', u'Irene', u'Marte', u'Gro', u'Britt', u'Ingeborg', u'Kjersti', u'Janne', u'Siv', u'Sigrid', u'Karoline', u'Karen', u'Vilde', u'Martine', u'Tonje', u'Andrea', u'Sofie', u'Torill', u'Synnøve', u'Rita', u'Jenny', u'Cathrine', u'Elise', u'Maren', u'Hanna']
     menn = [u'Jan', u'Per', u'Bjørn', u'Ole', u'Lars', u'Kjell', u'Knut', u'Arne', u'Svein', u'Thomas', u'Hans', u'Geir', u'Tor', u'Morten', u'Terje', u'Odd', 'Erik', u'Martin', u'Andreas', u'John', u'Anders', u'Rune', u'Trond', u'Tore', u'Daniel', u'Jon', u'Kristian', u'Marius', u'Tom', u'Harald', u'Olav', u'Stian', u'Magnus', u'Gunnar', u'Rolf', u'Øyvind', u'Espen', u'Leif', u'Henrik', u'Fredrik', u'Nils', u'Christian', u'Eirik', u'Helge', u'Jonas', u'Håkon', u'Einar', u'Steinar', u'Frode', u'Øystein', u'Jørgen', u'Arild', u'Kjetil', u'Kåre', u'Alexander', u'Petter', u'Frank', u'Stein', u'Johan', u'Kristoffer', u'Dag', u'Mathias', u'Ivar', u'Stig', u'Vidar', u'Kenneth', u'Ola', u'Tommy', u'Pål', u'Magne', u'Karl', u'Sverre', u'Håvard', u'Roger', u'Emil', u'Egil', u'Simen', u'Alf', u'Eivind', u'Sondre', u'Robert', u'Adrian', u'Jens', u'Kim', u'Vegard', u'Thor', u'Roy', u'Sebastian', u'Sander', u'Johannes', u'Tobias', u'Sindre', u'Torbjørn', u'Erling', u'Roar', u'Finn', u'Asbjørn', u'Sigurd', u'Reidar', u'Joakim']
-    gruff = [u"Væinø","Linn", "Ola Irene", "Kim", "Kim Are", "Jenny Oluf Thomsen", "Eirik", "Erika", "Erika Olsen", "Karlsen", u"Åse Finnbogadottir", u"råtte", "stol"]
+    gruff = ["eirik",u"Væinø","Linn", "Ola Irene", "Kim", "Kim Are", "Jenny Oluf Thomsen", "Eirik", "Erika", "Erika Olsen", "Karlsen", u"Åse Finnbogadottir", u"råtte", "stol"]
 
 
     for n in gruff:

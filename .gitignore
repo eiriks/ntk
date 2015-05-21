@@ -6,7 +6,6 @@ __pycache__/
 nrk_names2gender.py
 data/etternavn.txt
 
-
 faset_ut/*
 # C extensions
 *.so

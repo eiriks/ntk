@@ -10,9 +10,9 @@ Omtrent slik er den ment å brukes:
 >>> from name2gender import name2gender
 >>> name_genie = name2gender()
 >>> name_genie.get_gender("Eirik")
-('Eirik', u'man', u'list_lookup')
+(u'Eirik', 'man', 'list_lookup')
 >>> name_genie.get_gender("Ulerikka")
-('Ulerikka', u'kvinne', u'predictor')
+(u'Ulerikka', 'kvinne', 'predictor')
 ```
 
 Navnet `Eirik` ble funnet i listen, mens `Ulerikka` ikke ligger i listen, men ble predikert av maskin-lærings-algoritmen.
