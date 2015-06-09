@@ -4,6 +4,8 @@ import urllib2, sys, re
 from bs4 import BeautifulSoup
 # next time use: http://www.crummy.com/software/BeautifulSoup/bs4/doc/#parsing-only-part-of-a-document to only parse a prt of the document...
 
+# dette scriptet brukes ikke lenger.
+
 #
 # Script to scrape the navnes from norskenavn.no
 # --> This was a one-off to collect som more gender-categorized names
