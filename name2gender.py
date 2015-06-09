@@ -44,6 +44,7 @@ class genderPredictor():
 
         featureset = list()
         for nameTuple in maleNames:
+            #print nameTuple[0]
             features = self._nameFeatures(nameTuple[0])
             featureset.append((features,'M'))
 
@@ -65,7 +66,7 @@ class genderPredictor():
         test_set  = featureset[cut_point:]
 
         self.train(train_set)
-
+        print "Accuracy: %s" % (self.test(test_set))
         return self.test(test_set)
 
     def classify(self,name):
@@ -79,8 +80,8 @@ class genderPredictor():
     def test(self,test_set):
        return classify.accuracy(self.classifier,test_set)
 
-    def getMostInformativeFeatures(self,n=5):
-        print self.classifier.show_most_informative_features()
+    def getMostInformativeFeatures(self,n=15):
+        print self.classifier.show_most_informative_features(n)
         return self.classifier.most_informative_features(n)
 
     def _loadNames(self):
@@ -88,6 +89,7 @@ class genderPredictor():
         f=open('data/no_names.pickle','rb')
         names=pickle.load(f)
         #return NOLoader.getNameList()
+        #print names
         return names
 
     def _nameFeatures(self,name):
@@ -95,6 +97,7 @@ class genderPredictor():
         return {
             'last_letter': name[-1],
             'last_two' : name[-2:],
+            'last_three' : name[-3:],
             'last_is_vowel' : (name[-1] in u'AEIOUYÆØÅ') # slutter noen navn på ÆØÅ i det heletatt? (øker accuracy til 0.82, men senker mini-testen for herrer med 7 prosentpoeng og øker damer med 2 prosentpoeng)
         }
 
@@ -105,6 +108,14 @@ class name2gender:
         self.jenter = self.last_jenter()
         self.gutter = self.last_gutter()
         self.begge = self.intersect(self.jenter, self.gutter)
+        # remove names that occur in both lists
+        self.jenter = [x for x in self.jenter if x not in self.begge]
+        self.gutter = [x for x in self.gutter if x not in self.begge]
+
+        # set up the predictor
+        self.gp = genderPredictor()
+        self.accuracy = self.gp.trainAndTest()
+        self.gp.getMostInformativeFeatures()
 
     def intersect(self, a, b):
         logging.info(" %s overlappende: %s" % (len(list(set(a) & set(b))), ", ".join(list(set(a) & set(b)))))
@@ -127,12 +138,12 @@ class name2gender:
         return list(set(self.gutte_liste))
 
     def predict_gender(self, name):
-        gp = genderPredictor()
+        #gp = genderPredictor()
         # genderPredictor shoul be rw to auto instansiate and train first time in use..
         # so I dont have to do this:
-        accuracy=gp.trainAndTest()
+        #accuracy=gp.trainAndTest()
 
-        return gp.classify(name)
+        return self.gp.classify(name)
 
     def get_gender(self, name):
         '''Assume standard navn: Firstname Lastname. '''
@@ -172,50 +183,32 @@ class name2gender:
             else:
                 return (name, u"man", u'predictor')
 
-# def get_names_from_web(url):
-#     from bs4 import BeautifulSoup
-#     import urllib2
-#     gruff_file = urllib2.urlopen(url)
-#     gruff_html = gruff_file.read()
-
-#     #print gruff_file.headers['content-type'] # text/html; charset=iso-8859-1
-#     encoding=gruff_file.headers['content-type'].split('charset=')[-1] # http://stackoverflow.com/questions/1020892/urllib2-read-to-unicode
-#     gruff_file.close()
-#     ucontent = unicode(gruff_html, encoding)
-#     soup = BeautifulSoup(ucontent)
-#     #redditAll = soup.find_all("a")
-#     for links in soup.find_all('a'):
-#         print (links.get('href')),links.text, type(links.text)
 
 if __name__ == '__main__':
-
-    #get_names_from_web("https://www.ssb.no/a/kortnavn/navn/guttermange.html")
-
-
     names = name2gender()
-    print names.get_gender("Sindre Granum")
-    print names.get_gender(u"Pål")
-    print names.get_gender(u"Øyvind")
-    print names.get_gender(u"André")
-    print names.get_gender("Kim")   # vanligst blant menn i Norge, antar jeg?
-
-    print names.get_gender("Linn")
-    print names.get_gender("Olga")
-    print names.get_gender(u"Åse")
-    print names.get_gender("Siri-Kathrine")    #
-
-    print names.get_gender("Anne-Britt")
-    print names.get_gender("Anne Marie")
-    print names.get_gender("May-britt")    # pussig med listen b?
-    print names.get_gender("Siri-Kathrine")
     print names.get_gender("Kari Marie Nilsen-Olsen")
 
+
+
+
     print "\n\n\nNorske navn: \n" # de 100 vanligste dama og herrenavn i norge 2013
+    testnavn = ["Sindre Granum",u"Pål", u"Øyvind", u"André", "Kim", "Linn",
+                "Olga",u"Åse", "Siri-Kathrine", "Anne-Britt", "Anne Marie",
+                "May-britt", "Siri-Kathrine"]
     kvinner = [u'Anne', u'Inger', u'Kari', u'Marit', u'Ingrid', u'Liv', u'Eva', u'Berit', u'Astrid', u'Bjørg', u'Hilde', u'Anna', u'Solveig', u'Marianne', u'Randi', u'Ida', u'Nina', u'Maria', u'Elisabeth', u'Kristin', u'Bente', u'Heidi', u'Silje', u'Hanne', u'Gerd', u'Linda', u'Tone', u'Tove', u'Elin', u'Anita', u'Wenche', u'Ragnhild', u'Camilla', u'Ellen', u'Karin', u'Hege', u'Ann', u'Else', u'Mona', u'Marie', u'Aud', u'Monica', u'Julie', u'Kristine', u'Turid', u'Laila', u'Reidun', u'Stine', u'Helene', u'Åse', u'Jorunn', u'Sissel', u'Mari', u'Line', u'Lene', u'Mette', u'Grethe', u'Trine', u'Unni', u'Malin', u'Grete', u'Thea', u'Gunn', u'Emma', u'May', u'Ruth', u'Lise', u'Emilie', u'Anette', u'Kirsten', u'Sara', u'Nora', u'Linn', u'Eli', u'Siri', u'Cecilie', u'Irene', u'Marte', u'Gro', u'Britt', u'Ingeborg', u'Kjersti', u'Janne', u'Siv', u'Sigrid', u'Karoline', u'Karen', u'Vilde', u'Martine', u'Tonje', u'Andrea', u'Sofie', u'Torill', u'Synnøve', u'Rita', u'Jenny', u'Cathrine', u'Elise', u'Maren', u'Hanna']
     menn = [u'Jan', u'Per', u'Bjørn', u'Ole', u'Lars', u'Kjell', u'Knut', u'Arne', u'Svein', u'Thomas', u'Hans', u'Geir', u'Tor', u'Morten', u'Terje', u'Odd', 'Erik', u'Martin', u'Andreas', u'John', u'Anders', u'Rune', u'Trond', u'Tore', u'Daniel', u'Jon', u'Kristian', u'Marius', u'Tom', u'Harald', u'Olav', u'Stian', u'Magnus', u'Gunnar', u'Rolf', u'Øyvind', u'Espen', u'Leif', u'Henrik', u'Fredrik', u'Nils', u'Christian', u'Eirik', u'Helge', u'Jonas', u'Håkon', u'Einar', u'Steinar', u'Frode', u'Øystein', u'Jørgen', u'Arild', u'Kjetil', u'Kåre', u'Alexander', u'Petter', u'Frank', u'Stein', u'Johan', u'Kristoffer', u'Dag', u'Mathias', u'Ivar', u'Stig', u'Vidar', u'Kenneth', u'Ola', u'Tommy', u'Pål', u'Magne', u'Karl', u'Sverre', u'Håvard', u'Roger', u'Emil', u'Egil', u'Simen', u'Alf', u'Eivind', u'Sondre', u'Robert', u'Adrian', u'Jens', u'Kim', u'Vegard', u'Thor', u'Roy', u'Sebastian', u'Sander', u'Johannes', u'Tobias', u'Sindre', u'Torbjørn', u'Erling', u'Roar', u'Finn', u'Asbjørn', u'Sigurd', u'Reidar', u'Joakim']
     gruff = ["eirik",u"Væinø","Linn", "Ola Irene", "Kim", "Kim Are", "Jenny Oluf Thomsen", "Eirik", "Erika", "Erika Olsen", "Karlsen", u"Åse Finnbogadottir", u"råtte", "stol"]
 
+    for name in testnavn:
+        a = names.get_gender(name)
+        print name + "\t ble \t" + a[1] + "\t -->\t" + a[2]
+
 
     for n in gruff:
         a = names.get_gender(n)
-        print a[0] + "\t ble " + a[1] + "-->" + a[2]
+        print a[0] + "\t ble \t" + a[1] + "\t -->" + a[2]
+
+    # print "\n\n\nSå unisex navnene:\n"
+    # for n in names.begge:
+    #     a = names.get_gender(n)
+    #     print a[0] + "\t ble \t" + a[1] + "\t -->" + a[2]

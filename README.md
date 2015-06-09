@@ -23,3 +23,8 @@ Prosjektet er basert på løse tråder herfra: https://github.com/eiriks/genderP
 Jeg har noe data på hvor nøyaktig dette er et-eller-annet sted, som jeg skal hoste opp neste gang jeg må rapportere nøyaktighet (som helt sikkert skjer en-gang snart).
 
 PS: Hvis du har noen alternative løsningsforslag til denne oppgaven ("gi meg ditt navn, og jeg skal si deg hvilket kjønn du er"), gi gjerne en lyd.
+
+Har fått noen fine navnelister av Ivar Utne:
+* http://www.uib.no/lle/23537/fornavnslister
+* http://www.uib.no/lle/23822/navnestatistikk-fra-mange-land
+* http://ssb.no/navn (ut over de helt innlysende listen herfra)

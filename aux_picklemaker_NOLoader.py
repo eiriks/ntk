@@ -3,7 +3,7 @@
 """
 NOLoader.py
 """
-import os
+import os, sys
 #import re
 import urllib2
 from zipfile import ZipFile
@@ -11,6 +11,53 @@ import csv
 import pickle
 import requests
 
+import logging  #DEBUG, INFO, WARNING, ERROR, CRITICAL
+logging.basicConfig(stream=sys.stderr,level=logging.DEBUG)
+
+def createNamesPickle():
+    # Poenget her er å lage pickle objektet uten å sammenlikne frekvens
+    # man bare bruke navnelistene som distinkte lister.
+    # i gammel kode lagres navn som
+    # typler (navn, ferekvens_men, frekvens_kvinner)
+    # det er bare navnene som senere brukes så
+    # (Eirik, 0, 0) er ok
+    import random
+    print random.random()
+    if not os.path.exists('data/'+str(random.random())+'finnes_ikke_no_names.pickle'):
+        print 'data/'+str(random.random())+'no_names.pickle does not exist, generating'
+
+        from name2gender import name2gender
+        obj = name2gender()
+
+        femaleNames = obj.jenter
+        maleNames = obj.gutter
+        begge = obj.begge
+
+        # remove dual unisex names
+        # and make it tuple (for lagecy reasons..)
+        femaleNames = [(x,0,0) for x in femaleNames if x not in begge]
+        maleNames = [(x,0,0) for x in maleNames if x not in begge]
+
+        # # Her sjekka koden før om et navn
+        # # var mer vanlig for et kjønn enn det andre
+        # # nå tar vi bare å fjerne unisex navn.
+
+        names=(maleNames,femaleNames)
+
+        #print 'Saving names.pickle'
+        fw=open('data/no_names.pickle','wb')
+        pickle.dump(names,fw,-1)
+        fw.close()
+        print 'Saved no_names.pickle'
+
+    else:
+        #print 'no_names.pickle exists, loading data'
+        f=open('data/no_names.pickle','rb')
+        names=pickle.load(f)
+        #print 'no_names.pickle loaded'
+    return names
+
+## her er gammel kode
 def getNameList():
     if not os.path.exists('data/no_names.pickle'):
         print 'data/no_names.pickle does not exist, generating'
@@ -77,9 +124,11 @@ def extractNamesDict():
 
     names=dict()
     genderMap={'data/no_names/boys.csv':0,'data/no_names/girls.csv':1} #    genderMap={'M':0,'F':1}
+    genderMap={'data/guttenavn.txt':0,'data/jentenavn.txt':1} #    genderMap={'M':0,'F':1}
+
 
     # her summeres alle med samme navn opp etter kjønn
-    for filename in filenames:
+    for filename in ['data/guttenavn.txt', 'data/jentenavn.txt']:#filenames:
         #print filename # osx creates fucking anoying __MACOSX folders!! http://stackoverflow.com/questions/10924236/mac-zip-compress-without-macosx-folder
         file=zf.open(filename,'rU')
         rows=csv.reader(file, delimiter=',')
@@ -109,4 +158,5 @@ def extractNamesDict():
     print names
     return names
 if __name__ == "__main__":
-    getNameList()
+    #getNameList()
+    createNamesPickle()
