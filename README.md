@@ -37,7 +37,7 @@ eller
 Dette forklares også med at navnelistene plukker opp da aller fleste navnene. (Det er dog fint å ha AI'n som backup da det ofte er bedre med et gjett enn bare tomme felter).
 
 ## Nøyaktighet2
-Mye av den høye nøyaktigheten kan spores i at de samme Ola og Kari går igjen gang på gang. Ved å kun kjøre unike navn (Ola får kun kjøre en eneste gang) får vi følgende nøyaktighet på NBL: `92.57`
+Mye av den høye nøyaktigheten kan spores i at de samme Ola og Kari går igjen gang på gang. Ved å kun kjøre unike navn (Ola får kun kjøre en eneste gang) får vi følgende nøyaktighet på NBL: `92.57%`
 Ved at:
 `len(navn)  5842
 len(set(navn))   1265
@@ -45,7 +45,8 @@ len(set(navn))   1265
 Riktige: 1171 og feil 94 gir en prosent på 92.57
 `
 Feilene kan jo være informative å legge ved:
-`('Øvre', 'kvinne', 'predictor')
+`python
+('Øvre', 'kvinne', 'predictor')
 ('Willi', 'kvinne', 'predictor')
 ('Ludwig', 'kvinne', 'predictor')
 ('Hartvig', 'kvinne', 'predictor')
