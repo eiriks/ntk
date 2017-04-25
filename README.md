@@ -145,5 +145,7 @@ Feilene kan jo være informative å legge ved:
 
 Dette er da altså navn som `navn-til-kjønn` tar feil av, gitt "fasitten" på [wikipedia artikelen om Norsk Biografisk Leksikon (NBL)](https://no.wikipedia.org/wiki/Wikipedia:Norsk_biografisk_leksikon/artikler).
 
+Det kunne jo være fristende å legge disse feilene inn i navnelistene, men da de er rimelig uvanlige, så lar jeg de være for denne gang. Du kan selv legge dem inn hvis du ser behovet.
+
 NB: Denne typen nøyaktighet som er gjort her (kun tillate unike navn) gir urimelig lave forventninger til programvaren gitt "normale" norske navn, da vi jo navngir de fleste
 norske barn med enda flere Ola, Oscar, Silje og Mari´r. Det er kun en demonstrasjon av begrensningene gitt metoden på et reelt datasett.
