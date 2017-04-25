@@ -22,16 +22,20 @@ To-do:
 - Trenger å håndtere CAPs og Camel-case bedre
 
 """
-
+# import os
 import sys
-import os
-import pickle, random
+import pickle
+import random
 from nltk import NaiveBayesClassifier, classify
 
-import logging  #DEBUG, INFO, WARNING, ERROR, CRITICAL
-logging.basicConfig(stream=sys.stderr,level=logging.DEBUG)
+import logging  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+logging.basicConfig(stream=sys.stderr, level=logging.WARNING)
 
-#logging.error("we are running")
+import os
+dir = os.path.dirname(__file__)
+pickle_file = os.path.join(dir, 'data/no_names.pickle')
+jentenavn_file = os.path.join(dir, "data/jentenavn.txt")
+guttenavn_file = os.path.join(dir, "data/guttenavn.txt")
 
 class genderPredictor():
     """ This is the AI model that kicks in if name is not found in lists.
@@ -40,66 +44,66 @@ class genderPredictor():
     """
 
     def getFeatures(self):
-        maleNames,femaleNames=self._loadNames()
+        maleNames, femaleNames = self._loadNames()
 
         featureset = list()
         for nameTuple in maleNames:
-            #print nameTuple[0]
             features = self._nameFeatures(nameTuple[0])
-            featureset.append((features,'M'))
+            featureset.append((features, 'M'))
 
         for nameTuple in femaleNames:
             features = self._nameFeatures(nameTuple[0])
-            featureset.append((features,'F'))
-        #print featureset
+            featureset.append((features, 'F'))
+        # print featureset
         return featureset
 
-    def trainAndTest(self,trainingPercent=0.80):
+    def trainAndTest(self, trainingPercent=0.80):
         featureset = self.getFeatures()
         random.shuffle(featureset)
-
         name_count = len(featureset)
-
-        cut_point=int(name_count*trainingPercent)
-
+        cut_point = int(name_count*trainingPercent)
         train_set = featureset[:cut_point]
-        test_set  = featureset[cut_point:]
+        test_set = featureset[cut_point:]
 
         self.train(train_set)
-        print "Accuracy: %s" % (self.test(test_set))
+        logging.info("Accuracy: %s" % (self.test(test_set)))
         return self.test(test_set)
 
-    def classify(self,name):
-        feats=self._nameFeatures(name)
+    def classify(self, name):
+        feats = self._nameFeatures(name)
         return self.classifier.classify(feats)
 
-    def train(self,train_set):
+    def train(self, train_set):
         self.classifier = NaiveBayesClassifier.train(train_set)
         return self.classifier
 
-    def test(self,test_set):
-       return classify.accuracy(self.classifier,test_set)
+    def test(self, test_set):
+        return classify.accuracy(self.classifier, test_set)
 
-    def getMostInformativeFeatures(self,n=15):
-        print self.classifier.show_most_informative_features(n)
+    def getMostInformativeFeatures(self, n=15):
+        logging.info(self.classifier.show_most_informative_features(n))
         return self.classifier.most_informative_features(n)
 
     def _loadNames(self):
-        #print USSSALoader.getNameList()
-        f=open('data/no_names.pickle','rb')
-        names=pickle.load(f)
-        #return NOLoader.getNameList()
-        #print names
+        # print USSSALoader.getNameList()
+        f = open(pickle_file, 'rb')
+        names = pickle.load(f)
+        # return NOLoader.getNameList()
+        # print names
         return names
 
-    def _nameFeatures(self,name):
-        name=name.upper()
+    def _nameFeatures(self, name):
+        name = name.upper()
         return {
-            'last_letter': name[-1],
-            'last_two' : name[-2:],
-            'last_three' : name[-3:],
-            'last_is_vowel' : (name[-1] in u'AEIOUYÆØÅ') # slutter noen navn på ÆØÅ i det heletatt? (øker accuracy til 0.82, men senker mini-testen for herrer med 7 prosentpoeng og øker damer med 2 prosentpoeng)
+            'last_letter': name[-1],    # -a er oftere for jenter
+            'last_two': name[-2:],      # -en er oftere for gutter
+            'last_three': name[-3:],    # -ine er oftere for jenter..
+            'last_is_vowel': (name[-1] in u'AEIOUYÆØÅ')  # slutter noen navn på
+            # ÆØÅ i det heletatt? (øker accuracy til 0.82, men senker
+            # mini-testen for herrer med 7 prosentpoeng og øker damer med 2
+            # prosentpoeng)
         }
+
 
 class name2gender:
     ''' class to lookup gender from First names in Norwegian'''
@@ -115,34 +119,39 @@ class name2gender:
         # set up the predictor
         self.gp = genderPredictor()
         self.accuracy = self.gp.trainAndTest()
-        self.gp.getMostInformativeFeatures()
+        # not need this for production..
+        #self.gp.getMostInformativeFeatures()
 
     def intersect(self, a, b):
-        logging.info(" %s overlappende: %s" % (len(list(set(a) & set(b))), ", ".join(list(set(a) & set(b)))))
-        return list(set(a) & set(b))   # [u'Inge\n', u'Kim\n', u'Tonny\n', u'Thanh\n', u'Marian\n'] ?? Har sjekket, det stemmer...
+        logging.info(" %s overlappende: %s" % (len(list(set(a) & set(b))),
+                     ", ".join(list(set(a) & set(b)))))
+        return list(set(a) & set(b))
+        # [u'Inge\n', u'Kim\n', u'Tonny\n', u'Thanh\n', u'Marian\n'] ??
 
     def last_jenter(self):
-        jenter = open("data/jentenavn.txt", 'U')
+        jenter = open(jentenavn_file, 'U')
         self.jente_liste = []
         for j in jenter:
-            self.jente_liste.append(j.decode("utf8").rstrip())
-        logging.info(" %s jente-navn, hvorav unike: %s" % (len(self.jente_liste), len(list(set(self.jente_liste)))))
+            self.jente_liste.append(j.rstrip())  # .decode("utf8")
+        logging.info(" %s jente-navn, hvorav unike: %s" %
+                     (len(self.jente_liste), len(list(set(self.jente_liste)))))
         return list(set(self.jente_liste))
 
     def last_gutter(self):
-        gutter = open("data/guttenavn.txt", "U")
+        gutter = open(guttenavn_file, "U")
         self.gutte_liste = []
         for g in gutter:
-            self.gutte_liste.append(g.decode("utf8").rstrip())
-        logging.info(" %s gutte-navn, hvorav unike: %s" % (len(self.gutte_liste), len(list(set(self.gutte_liste)))))
+            self.gutte_liste.append(g.rstrip())  # .decode("utf8")
+        logging.info(" %s gutte-navn, hvorav unike: %s" %
+                     (len(self.gutte_liste), len(list(set(self.gutte_liste)))))
         return list(set(self.gutte_liste))
 
     def predict_gender(self, name):
-        #gp = genderPredictor()
-        # genderPredictor shoul be rw to auto instansiate and train first time in use..
+        # gp = genderPredictor()
+        # genderPredictor shoul be rw to auto instansiate
+        # and train first time in use..
         # so I dont have to do this:
-        #accuracy=gp.trainAndTest()
-
+        # accuracy=gp.trainAndTest()
         return self.gp.classify(name)
 
     def get_gender(self, name):
@@ -158,7 +167,6 @@ class name2gender:
 
         # Uppercase fist letter (in case its not already)
         name = name.capitalize()
-
 
         if name in self.jenter:
             return (name, u"kvinne", u'list_lookup')
@@ -186,27 +194,55 @@ class name2gender:
 
 if __name__ == '__main__':
     names = name2gender()
-    print names.get_gender("Kari Marie Nilsen-Olsen")
+    print(names.get_gender("Kari Marie Nilsen-Olsen"))
 
-
-
-
-    print "\n\n\nNorske navn: \n" # de 100 vanligste dama og herrenavn i norge 2013
-    testnavn = ["Sindre Granum",u"Pål", u"Øyvind", u"André", "Kim", "Linn",
-                "Olga",u"Åse", "Siri-Kathrine", "Anne-Britt", "Anne Marie",
+    # de 100 vanligste dama og herrenavn i norge 2013
+    print("\n\n\nNorske navn: \n")
+    testnavn = ["Sindre Granum", u"Pål", u"Øyvind", u"André", "Kim", "Linn",
+                "Olga", u"Åse", "Siri-Kathrine", "Anne-Britt", "Anne Marie",
                 "May-britt", "Siri-Kathrine"]
-    kvinner = [u'Anne', u'Inger', u'Kari', u'Marit', u'Ingrid', u'Liv', u'Eva', u'Berit', u'Astrid', u'Bjørg', u'Hilde', u'Anna', u'Solveig', u'Marianne', u'Randi', u'Ida', u'Nina', u'Maria', u'Elisabeth', u'Kristin', u'Bente', u'Heidi', u'Silje', u'Hanne', u'Gerd', u'Linda', u'Tone', u'Tove', u'Elin', u'Anita', u'Wenche', u'Ragnhild', u'Camilla', u'Ellen', u'Karin', u'Hege', u'Ann', u'Else', u'Mona', u'Marie', u'Aud', u'Monica', u'Julie', u'Kristine', u'Turid', u'Laila', u'Reidun', u'Stine', u'Helene', u'Åse', u'Jorunn', u'Sissel', u'Mari', u'Line', u'Lene', u'Mette', u'Grethe', u'Trine', u'Unni', u'Malin', u'Grete', u'Thea', u'Gunn', u'Emma', u'May', u'Ruth', u'Lise', u'Emilie', u'Anette', u'Kirsten', u'Sara', u'Nora', u'Linn', u'Eli', u'Siri', u'Cecilie', u'Irene', u'Marte', u'Gro', u'Britt', u'Ingeborg', u'Kjersti', u'Janne', u'Siv', u'Sigrid', u'Karoline', u'Karen', u'Vilde', u'Martine', u'Tonje', u'Andrea', u'Sofie', u'Torill', u'Synnøve', u'Rita', u'Jenny', u'Cathrine', u'Elise', u'Maren', u'Hanna']
-    menn = [u'Jan', u'Per', u'Bjørn', u'Ole', u'Lars', u'Kjell', u'Knut', u'Arne', u'Svein', u'Thomas', u'Hans', u'Geir', u'Tor', u'Morten', u'Terje', u'Odd', 'Erik', u'Martin', u'Andreas', u'John', u'Anders', u'Rune', u'Trond', u'Tore', u'Daniel', u'Jon', u'Kristian', u'Marius', u'Tom', u'Harald', u'Olav', u'Stian', u'Magnus', u'Gunnar', u'Rolf', u'Øyvind', u'Espen', u'Leif', u'Henrik', u'Fredrik', u'Nils', u'Christian', u'Eirik', u'Helge', u'Jonas', u'Håkon', u'Einar', u'Steinar', u'Frode', u'Øystein', u'Jørgen', u'Arild', u'Kjetil', u'Kåre', u'Alexander', u'Petter', u'Frank', u'Stein', u'Johan', u'Kristoffer', u'Dag', u'Mathias', u'Ivar', u'Stig', u'Vidar', u'Kenneth', u'Ola', u'Tommy', u'Pål', u'Magne', u'Karl', u'Sverre', u'Håvard', u'Roger', u'Emil', u'Egil', u'Simen', u'Alf', u'Eivind', u'Sondre', u'Robert', u'Adrian', u'Jens', u'Kim', u'Vegard', u'Thor', u'Roy', u'Sebastian', u'Sander', u'Johannes', u'Tobias', u'Sindre', u'Torbjørn', u'Erling', u'Roar', u'Finn', u'Asbjørn', u'Sigurd', u'Reidar', u'Joakim']
-    gruff = ["eirik",u"Væinø","Linn", "Ola Irene", "Kim", "Kim Are", "Jenny Oluf Thomsen", "Eirik", "Erika", "Erika Olsen", "Karlsen", u"Åse Finnbogadottir", u"råtte", "stol"]
+    kvinner = [u'Anne', u'Inger', u'Kari', u'Marit', u'Ingrid', u'Liv', u'Eva',
+               u'Berit', u'Astrid', u'Bjørg', u'Hilde', u'Anna', u'Solveig',
+               u'Marianne', u'Randi', u'Ida', u'Nina', u'Maria', u'Elisabeth',
+               u'Kristin', u'Bente', u'Heidi', u'Silje', u'Hanne', u'Gerd',
+               u'Linda', u'Tone', u'Tove', u'Elin', u'Anita', u'Wenche',
+               u'Ragnhild', u'Camilla', u'Ellen', u'Karin', u'Hege', u'Ann',
+               u'Else', u'Mona', u'Marie', u'Aud', u'Monica', u'Julie',
+               u'Kristine', u'Turid', u'Laila', u'Reidun', u'Stine', u'Helene',
+               u'Åse', u'Jorunn', u'Sissel', u'Mari', u'Line', u'Lene',
+               u'Mette', u'Grethe', u'Trine', u'Unni', u'Malin', u'Grete',
+               u'Thea', u'Gunn', u'Emma', u'May', u'Ruth', u'Lise', u'Emilie',
+               u'Anette', u'Kirsten', u'Sara', u'Nora', u'Linn', u'Eli',
+               u'Siri', u'Cecilie', u'Irene', u'Marte', u'Gro', u'Britt',
+               u'Ingeborg', u'Kjersti', u'Janne', u'Siv', u'Sigrid',
+               u'Karoline', u'Karen', u'Vilde', u'Martine', u'Tonje', u'Andrea',
+               u'Sofie', u'Torill', u'Synnøve', u'Rita', u'Jenny', u'Cathrine',
+               u'Elise', u'Maren', u'Hanna']
+    menn = [u'Jan', u'Per', u'Bjørn', u'Ole', u'Lars', u'Kjell', u'Knut', u'Arne',
+        u'Svein', u'Thomas', u'Hans', u'Geir', u'Tor', u'Morten', u'Terje', u'Odd',
+        'Erik', u'Martin', u'Andreas', u'John', u'Anders', u'Rune', u'Trond', u'Tore',
+        u'Daniel', u'Jon', u'Kristian', u'Marius', u'Tom', u'Harald', u'Olav', u'Stian',
+        u'Magnus', u'Gunnar', u'Rolf', u'Øyvind', u'Espen', u'Leif', u'Henrik',
+        u'Fredrik', u'Nils', u'Christian', u'Eirik', u'Helge', u'Jonas', u'Håkon',
+        u'Einar', u'Steinar', u'Frode', u'Øystein', u'Jørgen', u'Arild', u'Kjetil',
+        u'Kåre', u'Alexander', u'Petter', u'Frank', u'Stein', u'Johan', u'Kristoffer',
+        u'Dag', u'Mathias', u'Ivar', u'Stig', u'Vidar', u'Kenneth', u'Ola', u'Tommy',
+        u'Pål', u'Magne', u'Karl', u'Sverre', u'Håvard', u'Roger', u'Emil', u'Egil',
+        u'Simen', u'Alf', u'Eivind', u'Sondre', u'Robert', u'Adrian', u'Jens', u'Kim',
+        u'Vegard', u'Thor', u'Roy', u'Sebastian', u'Sander', u'Johannes', u'Tobias',
+        u'Sindre', u'Torbjørn', u'Erling', u'Roar', u'Finn', u'Asbjørn', u'Sigurd',
+        u'Reidar', u'Joakim']
+    gruff = ["eirik", u"Væinø", "Linn", "Ola Irene", "Kim", "Kim Are",
+        "Jenny Oluf Thomsen", "Eirik", "Erika", "Erika Olsen", "Karlsen",
+        u"Åse Finnbogadottir", u"råtte", "stol"]
 
-    for name in testnavn:
-        a = names.get_gender(name)
-        print name + "\t ble \t" + a[1] + "\t -->\t" + a[2]
+    for name__ in testnavn:
+        a = names.get_gender(name__)
+        print(name__ + "\t ble \t" + a[1] + "\t -->\t" + a[2])
 
-
-    for n in gruff:
-        a = names.get_gender(n)
-        print a[0] + "\t ble \t" + a[1] + "\t -->" + a[2]
+    for n__ in gruff:
+        a = names.get_gender(n__)
+        print(a[0] + "\t ble \t" + a[1] + "\t -->" + a[2])
 
     # print "\n\n\nSå unisex navnene:\n"
     # for n in names.begge:
