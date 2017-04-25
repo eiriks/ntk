@@ -39,13 +39,14 @@ Dette forklares også med at navnelistene plukker opp da aller fleste navnene. (
 ## Nøyaktighet2
 Mye av den høye nøyaktigheten kan spores i at de samme Ola og Kari går igjen gang på gang. Ved å kun kjøre unike navn (Ola får kun kjøre en eneste gang) får vi følgende nøyaktighet på NBL: `92.57%`
 Ved at:
-`len(navn)  5842
+```python
+len(navn)  5842
 len(set(navn))   1265
 # altså har vi 1265 unike fornavn i datasettet
 Riktige: 1171 og feil 94 gir en prosent på 92.57
-`
+```
 Feilene kan jo være informative å legge ved:
-`python
+```python
 ('Øvre', 'kvinne', 'predictor')
 ('Willi', 'kvinne', 'predictor')
 ('Ludwig', 'kvinne', 'predictor')
@@ -139,7 +140,8 @@ Feilene kan jo være informative å legge ved:
 ('Moltke', 'kvinne', 'predictor')
 ('Brynild', 'kvinne', 'predictor')
 ('Sigtrygg', 'kvinne', 'predictor')
-('Iben', 'man', 'predictor')`
+('Iben', 'man', 'predictor')```
+
 Dette er da altså navn som `navn-til-kjønn` tar feil av, gitt "fasitten" på [wikipedia artikelen om Norsk Biografisk Leksikon (NBL)](https://no.wikipedia.org/wiki/Wikipedia:Norsk_biografisk_leksikon/artikler).
 
 NB: Denne typen nøyaktighet som er gjort her (kun tillate unike navn) gir urimelig lave forventninger til programvaren gitt "normale" norske navn, da vi jo navngir de fleste
