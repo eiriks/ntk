@@ -140,7 +140,8 @@ Feilene kan jo være informative å legge ved:
 ('Moltke', 'kvinne', 'predictor')
 ('Brynild', 'kvinne', 'predictor')
 ('Sigtrygg', 'kvinne', 'predictor')
-('Iben', 'man', 'predictor')```
+('Iben', 'man', 'predictor')
+```
 
 Dette er da altså navn som `navn-til-kjønn` tar feil av, gitt "fasitten" på [wikipedia artikelen om Norsk Biografisk Leksikon (NBL)](https://no.wikipedia.org/wiki/Wikipedia:Norsk_biografisk_leksikon/artikler).
 
