@@ -5,7 +5,8 @@ setup(
     version='0.1.0',
     author='Eirik Stavelin',
     packages=find_packages(), #['towelstuff',],
-    include_package_data=True,
+    # include_package_data=True, # virker ikke
+    package_data={'praenomen2genus': ['data/*.txt']},
     url='https://github.com/eiriks/praenomen2genus',
     license='MIT',
     long_description=open('README.md').read(),
