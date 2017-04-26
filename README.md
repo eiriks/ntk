@@ -26,6 +26,12 @@ Omtrent slik er den ment å brukes:
 Navnet `Eirik` ble funnet i listen, mens `Ulerikka` ikke ligger i listen, men ble predikert av maskin-lærings-algoritmen.
 
 
+# Installasjon
+```bash
+pip3 install git+https://github.com/eiriks/praenomen2genus.git
+```
+
+
 Prosjektet er basert på løse tråder herfra: https://github.com/eiriks/genderPredictor
 
 Jeg har noe data på hvor nøyaktig dette er et-eller-annet sted, som jeg skal hoste opp neste gang jeg må rapportere nøyaktighet (som helt sikkert skjer en-gang snart).
