@@ -6,7 +6,7 @@ setup(
     author='Eirik Stavelin',
     packages=find_packages(), #['towelstuff',],
     # include_package_data=True, # virker ikke
-    package_data={'praenomen2genus': ['data/*.txt']},
+    package_data={'praenomen2genus': ['data/*.txt', 'data/*.pickle']},
     url='https://github.com/eiriks/praenomen2genus',
     license='MIT',
     long_description=open('README.md').read(),
