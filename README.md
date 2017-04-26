@@ -163,3 +163,63 @@ Det kunne jo være fristende å legge disse feilene inn i navnelistene, men da d
 
 NB: Denne typen nøyaktighet som er gjort her (kun tillate unike navn) gir urimelig lave forventninger til programvaren gitt "normale" norske navn, da vi jo navngir de fleste
 norske barn med enda flere Ola, Oscar, Silje og Mari´r. Det er kun en demonstrasjon av begrensningene gitt metoden på et reelt datasett.
+
+
+## Nøyaktighet 3
+La merke til at wikipedia også har lister med Norske navn delt etter kjønn.
+Test av dem gir `>99.5%` rette.
+
+```python
+# teste wikipedia
+import pandas as pd
+
+print("Test med gruttenavn fra wikipedia:")
+wikigutter = pd.read_html('https://no.wikipedia.org/wiki/Liste_over_norske_mannsnavn')[1]
+
+
+riktige = 0
+feil = 0
+
+for name in wikigutter.get_values()[1:]:
+    if genie.get_gender(name[0])[1] != "man":
+        print("\t -> Man, feil:", name[0], genie.get_gender(name[0]))
+        feil += 1
+    else:
+        riktige += 1
+
+tot = riktige + feil
+print("Riktige: {} og feil: {} gir en prosent på {}%".format(riktige, feil, round((riktige/tot*100), 2)))
+
+
+print()
+
+# jenter
+print("Test med jentenavn fra wikipedia:")
+wikijenter = pd.read_html('https://no.wikipedia.org/wiki/Liste_over_norske_kvinnenavn')[0]
+riktige = 0
+feil = 0
+
+for name in wikijenter.get_values()[1:]:
+    #print(name[1])
+    if genie.get_gender(name[1])[1] != "kvinne":
+        print("\t -> Kvinne, feil: ", name[1], genie.get_gender(name[1]))
+        feil += 1
+    else:
+        riktige += 1
+
+tot = riktige + feil
+print("Riktige: {} og feil {} gir en prosent på {}%".format(riktige, feil, round((riktige/tot*100), 2)))
+```
+
+
+```python
+Test med gruttenavn fra wikipedia:
+	 -> Man, feil: Thanh ('Thanh', 'kvinne', 'predictor')
+Riktige: 621 og feil: 1 gir en prosent på 99.84%
+
+Test med jentenavn fra wikipedia:
+	 -> Kvinne, feil:  Iben ('Iben', 'man', 'predictor')
+	 -> Kvinne, feil:  Kim ('Kim', 'man', 'predictor')
+	 -> Kvinne, feil:  Inge ('Inge', 'man', 'list_lookup')
+Riktige: 879 og feil 3 gir en prosent på 99.66%
+```
