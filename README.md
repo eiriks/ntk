@@ -1,5 +1,13 @@
-# Navn-til-kjønn
+# praenomen2genus
+<dl>
+  <dt>praenomen</dt>
+  <dd>fornavn.</dd>
+
+  <dt>genus</dt>
+  <dd>kjønn</dd>
+</dl>
 Quick-fix for å konvertere norske egennavn til kjønn (mann/kvinne).
+Siste versjon av kode som tidligere het `Navn-til-kj-nn`.
 
 
 Målet med denne versjonen av koden er bare å forenkle slik at dette kan brukes fort-og-gæli som et bedre-enn-ingenting verktøy.
@@ -7,11 +15,11 @@ Målet med denne versjonen av koden er bare å forenkle slik at dette kan brukes
 Omtrent slik er den ment å brukes:
 
 ```python
->>> from name2gender import name2gender
->>> name_genie = name2gender()
->>> name_genie.get_gender("Eirik")
+>>> from praenomen2genus import praenomen2genus
+>>> genies = praenomen2genus()
+>>> genies.get_gender("Eirik")
 (u'Eirik', 'man', 'list_lookup')
->>> name_genie.get_gender("Ulerikka")
+>>> genies.get_gender("Ulerikka")
 (u'Ulerikka', 'kvinne', 'predictor')
 ```
 
