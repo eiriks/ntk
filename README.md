@@ -1,7 +1,7 @@
 # praenomen2genus
 <dl>
   <dt>praenomen</dt>
-  <dd>fornavn.</dd>
+  <dd>fornavn</dd>
 
   <dt>genus</dt>
   <dd>kjønn</dd>
