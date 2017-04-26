@@ -556,6 +556,7 @@ Duncan
 Dustin
 Duy
 Dylan
+Dyre
 Dàrio
 Dánial
 Dánjal
@@ -664,6 +665,7 @@ Enrico
 Enrique
 Enver
 Enzo
+Engebret
 Eoghan
 Eoin
 Erasmo
@@ -702,6 +704,7 @@ Euan
 Eugen
 Eugenio
 Eugènio
+Eugène
 Eugénio
 Eusébio
 Evald
@@ -796,6 +799,7 @@ Fraser
 Fred
 Freddie
 Freddy
+Frede
 Frederic
 Frederick
 Frederico
@@ -984,17 +988,20 @@ Guðlaugur
 Guðmundur
 Guðni
 Gylvi
+Guy
 Gàspare
 Gérard
 Gíslar
 Gísli
 Gøran
+Gösta
 Haakon
 Haavard
 Hadrien
 Hafsteinn
 Hafþór
 Hagbarður
+Hagbarth
 Hai
 Haldor
 Halfdan
@@ -1039,6 +1046,7 @@ Harris
 Harrison
 Harry
 Harvey
+Hartvig
 Hasan
 Hassan
 Hauk
@@ -1062,6 +1070,7 @@ Hektor
 Helge
 Helgi
 Helmer
+Hellmuth
 Hemingur
 Hemmingur
 Hendrik
@@ -1284,6 +1293,7 @@ Jenne
 Jens
 Jeppe
 Jere
+Jeremi
 Jeremy
 Jermund
 Jeroen
@@ -1628,6 +1638,7 @@ Ludovic
 Ludvig
 Ludvik
 Ludvík
+Ludwig
 Luis
 Luka
 Lukas
@@ -1978,6 +1989,7 @@ Osvald
 Ottar
 Ottavio
 Otto
+Otte
 Ove
 Ovi
 Owe
@@ -1991,6 +2003,7 @@ Oyvindur
 Paal
 Pablo
 Padraig
+Palle
 Palli
 Palmer
 Pascal
@@ -2305,6 +2318,7 @@ Sjúrður
 Skeggi
 Skjalg
 Skofti
+Skule
 Skúli
 Skúvur
 Slawomir
@@ -2474,6 +2488,7 @@ Thormod
 Thorolf
 Thorstein
 Thorvald
+Thorry
 Théodore
 Tiago
 Tian
@@ -2523,6 +2538,7 @@ Tor-erik
 Toralf
 Toralv
 Torben
+Torberg
 Torbergur
 Torbjørn
 Torbrandur
@@ -2584,6 +2600,7 @@ Tuomas
 Tuur
 Twan
 Ty
+Tyge
 Tyler
 Tyrni
 Tyrnir
@@ -2647,6 +2664,7 @@ Veturliði
 Vicente
 Victor
 Vidar
+Vidkunn
 Vigfús
 Viggo
 Vigleik
@@ -2716,6 +2734,8 @@ Wilhelmus
 Willem
 William
 Willy
+Willi
+Willie
 Wilmer
 Wilson
 Wim

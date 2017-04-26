@@ -1,4 +1,5 @@
 Aada
+Aadel
 Aagot
 Aaliyah
 Aaltje
@@ -172,8 +173,10 @@ Anne-marie
 Anne-marit
 Anne-mette
 Anne-sofie
-Anne_lise
-Anne_marie
+Anne-lise
+Annelise
+Annemarie
+Anneken
 Anneli
 Annelies
 Annelin
@@ -186,6 +189,7 @@ Anni
 Annicken
 Annie
 Anniina
+Annik
 Annika
 Anniken
 Annikken
@@ -404,6 +408,7 @@ Bryndis
 Bryndís
 Bryngerð
 Brynhild
+Brynild
 Brynja
 Brá
 Bríet
@@ -678,6 +683,7 @@ Ellie
 Ellinor
 Ellis
 Ellisiv
+Ellisif
 Elly
 Elma
 Elna
@@ -1291,6 +1297,7 @@ Jorja
 Jorun
 Jorund
 Jorunn
+Joronn
 Josefa
 Josefien
 Josefiina
@@ -1392,6 +1399,7 @@ Kathrin
 Kathrine
 Kathryn
 Katie
+Katti
 Katinka
 Katja
 Katla
@@ -1555,6 +1563,8 @@ Lillan
 Lilli
 Lillian
 Lilly
+Lillemor
+Lillebil
 Lily
 Lin
 Lina
@@ -2270,6 +2280,7 @@ Signild
 Signuva
 Signy
 Signý
+Signi
 Sigrid
 Sigrið
 Sigrun
@@ -2577,6 +2588,7 @@ Valdis
 Valdís
 Valentina
 Valeria
+Valgerd
 Valgerð
 Valgerður
 Vally
@@ -2654,7 +2666,6 @@ Wigdis
 Wiktoria
 Wilda
 Wilhelmina
-Willie
 Wilma
 Winnie
 Wivi
