@@ -105,7 +105,7 @@ class genderPredictor():
         }
 
 
-class praenomen2genus:
+class Genie:
     ''' class to lookup gender from First names in Norwegian'''
 
     def __init__(self):

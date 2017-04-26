@@ -1,13 +1,13 @@
-from distutils.core import setup, find_packages
+from setuptools import setup, find_packages
 
 setup(
     name='praenomen2genus',
     version='0.1.0',
-    packages=find_packages()#['towelstuff',],
+    packages=find_packages(), #['towelstuff',],
     author='Eirik Stavelin',
     url='https://github.com/eiriks/praenomen2genus',
     license='MIT',
-    long_description=open('README.txt').read(),
+    long_description=open('README.md').read(),
     classifiers=[
     # How mature is this project? Common values are
     #   3 - Alpha

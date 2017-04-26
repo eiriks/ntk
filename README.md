@@ -16,8 +16,8 @@ Omtrent slik er den ment å brukes:
 
 ```python
 >>> from praenomen2genus import praenomen2genus
->>> genies = praenomen2genus()
->>> genies.get_gender("Eirik")
+>>> genie = praenomen2genus.Genie()
+>>> genie.get_gender("Eirik")
 (u'Eirik', 'man', 'list_lookup')
 >>> genies.get_gender("Ulerikka")
 (u'Ulerikka', 'kvinne', 'predictor')
