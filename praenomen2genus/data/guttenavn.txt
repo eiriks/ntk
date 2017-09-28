@@ -445,6 +445,7 @@ Claudio
 Claus
 Clovis
 Clément
+Clement
 Clémentin
 Coen
 Cole
@@ -961,6 +962,7 @@ Gunnar
 Gunnbjørn
 Gunnlaugur
 Gunnleikur
+Gunnleiv
 Gunnleivur
 Gunnleygur
 Gunnolvur
@@ -1500,6 +1502,7 @@ Klaas
 Klas
 Klaus
 Klemet
+Klement
 Kláus
 Klæmint
 Knud
@@ -2225,6 +2228,7 @@ Salomão
 Salvador
 Salvatore
 Salvatòre
+Salve
 Sam
 Sami
 Samir

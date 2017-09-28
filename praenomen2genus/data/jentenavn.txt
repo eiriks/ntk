@@ -970,6 +970,7 @@ Gunnhildur
 Gunni
 Gunnlaug
 Gunnleyg
+Gunnleiv
 Gunnrið
 Gunnveig
 Gunnvor
@@ -1013,6 +1014,7 @@ Hallfrid
 Hallfríð
 Hallgerð
 Hallgunn
+Hallgjerd
 Hallveig
 Hallvør
 Hana
