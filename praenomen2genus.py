@@ -23,19 +23,23 @@ To-do:
 
 """
 # import os
+import os
 import sys
 import pickle
 import random
+from typing import List, Tuple
 from nltk import NaiveBayesClassifier, classify
+
+from aux_functions import clean_name
 
 import logging  # DEBUG, INFO, WARNING, ERROR, CRITICAL
 logging.basicConfig(stream=sys.stderr, level=logging.WARNING)
 
-import os
 dir = os.path.dirname(__file__)
 pickle_file = os.path.join(dir, 'data/no_names.pickle')
 jentenavn_file = os.path.join(dir, "data/jentenavn.txt")
 guttenavn_file = os.path.join(dir, "data/guttenavn.txt")
+
 
 class genderPredictor():
     """ This is the AI model that kicks in if name is not found in lists.
@@ -120,16 +124,16 @@ class Genie:
         self.gp = genderPredictor()
         self.accuracy = self.gp.trainAndTest()
         # not need this for production..
-        #self.gp.getMostInformativeFeatures()
+        # self.gp.getMostInformativeFeatures()
 
     def intersect(self, a, b):
         logging.info(" %s overlappende: %s" % (len(list(set(a) & set(b))),
-                     ", ".join(list(set(a) & set(b)))))
+                                               ", ".join(list(set(a) & set(b)))))
         return list(set(a) & set(b))
         # [u'Inge\n', u'Kim\n', u'Tonny\n', u'Thanh\n', u'Marian\n'] ??
 
-    def last_jenter(self):
-        jenter = open(jentenavn_file, 'U')
+    def last_jenter(self) -> List[str]:
+        jenter = open(jentenavn_file)
         self.jente_liste = []
         for j in jenter:
             self.jente_liste.append(j.rstrip())  # .decode("utf8")
@@ -137,8 +141,8 @@ class Genie:
                      (len(self.jente_liste), len(list(set(self.jente_liste)))))
         return list(set(self.jente_liste))
 
-    def last_gutter(self):
-        gutter = open(guttenavn_file, "U")
+    def last_gutter(self) -> List[str]:
+        gutter = open(guttenavn_file)
         self.gutte_liste = []
         for g in gutter:
             self.gutte_liste.append(g.rstrip())  # .decode("utf8")
@@ -146,41 +150,54 @@ class Genie:
                      (len(self.gutte_liste), len(list(set(self.gutte_liste)))))
         return list(set(self.gutte_liste))
 
-    def predict_gender(self, name):
-        # gp = genderPredictor()
-        # genderPredictor shoul be rw to auto instansiate
-        # and train first time in use..
-        # so I dont have to do this:
-        # accuracy=gp.trainAndTest()
+    def predict_gender(self, name: str):
+        """Takes name, returns tuple
+
+        Args:
+            name (str): navn. eg. 'Eirik'
+
+        Returns:
+            [type]: [description]
+        """
         return self.gp.classify(name)
 
-    def get_gender(self, name):
+    def get_gender(self, name: str, verbose: bool = False) -> Tuple[str, str, str]:
         '''Assume standard navn: Firstname Lastname. '''
         # should expect unicode
         # when data is dread from files, its... something else..
         # name = name.decode("utf8")      # Her forventer vi noen André-er og Åshilder og Øyvinder..
         # what if input is None, NULL, etc?
 
-        name = name.split()[0]          # grab only the first part (if more)
-        if "-" in name:             # if dual name with hyphen, split name and use the first first-name.
-            name = name.split("-")[0]
+        clean_name_str = clean_name(name)
+        # grab only the first part (if more)
+        if verbose:
+            if name != clean_name_str:
+                print("Navnet ble endret på")
+            print(f"{name } --> {clean_name_str}")
 
-        # Uppercase fist letter (in case its not already)
-        name = name.capitalize()
+        # grab first bit of name string, that should be first name, in caps please
+        name = clean_name_str.split()[0].capitalize()
 
         if name in self.jenter:
+            if verbose:
+                print(name, " er en kvinne")
             return (name, u"kvinne", u'list_lookup')
         elif name in self.gutter:
-            return (name, u"man", u'list_lookup')
+            if verbose:
+                print(name, "er en mann")
+            return (name, u"mann", u'list_lookup')
 
         elif name in self.begge:
+            if verbose:
+                print(
+                    "Navn finnes i ordlister for både kvinne og mann. prediksjon må til")
             # Navnet er både registrert som Gutte- og jentenavn:
             # Bruk AI
             # return (name, u"begge")
             if self.predict_gender(name) == 'F':
                 return (name, u"kvinne", u'predictor')
             else:
-                return (name, u"man", u'predictor')
+                return (name, u"mann", u'predictor')
 
         else:
             # Vi kjenner ikke dette navnet fra før:
@@ -189,52 +206,21 @@ class Genie:
             if self.predict_gender(name) == 'F':
                 return (name, u"kvinne", u'predictor')
             else:
-                return (name, u"man", u'predictor')
+                return (name, u"mann", u'predictor')
 
 
 if __name__ == '__main__':
-    names = name2gender()
+    names = Genie()
     print(names.get_gender("Kari Marie Nilsen-Olsen"))
 
-    # de 100 vanligste dama og herrenavn i norge 2013
     print("\n\n\nNorske navn: \n")
     testnavn = ["Sindre Granum", u"Pål", u"Øyvind", u"André", "Kim", "Linn",
                 "Olga", u"Åse", "Siri-Kathrine", "Anne-Britt", "Anne Marie",
                 "May-britt", "Siri-Kathrine"]
-    kvinner = [u'Anne', u'Inger', u'Kari', u'Marit', u'Ingrid', u'Liv', u'Eva',
-               u'Berit', u'Astrid', u'Bjørg', u'Hilde', u'Anna', u'Solveig',
-               u'Marianne', u'Randi', u'Ida', u'Nina', u'Maria', u'Elisabeth',
-               u'Kristin', u'Bente', u'Heidi', u'Silje', u'Hanne', u'Gerd',
-               u'Linda', u'Tone', u'Tove', u'Elin', u'Anita', u'Wenche',
-               u'Ragnhild', u'Camilla', u'Ellen', u'Karin', u'Hege', u'Ann',
-               u'Else', u'Mona', u'Marie', u'Aud', u'Monica', u'Julie',
-               u'Kristine', u'Turid', u'Laila', u'Reidun', u'Stine', u'Helene',
-               u'Åse', u'Jorunn', u'Sissel', u'Mari', u'Line', u'Lene',
-               u'Mette', u'Grethe', u'Trine', u'Unni', u'Malin', u'Grete',
-               u'Thea', u'Gunn', u'Emma', u'May', u'Ruth', u'Lise', u'Emilie',
-               u'Anette', u'Kirsten', u'Sara', u'Nora', u'Linn', u'Eli',
-               u'Siri', u'Cecilie', u'Irene', u'Marte', u'Gro', u'Britt',
-               u'Ingeborg', u'Kjersti', u'Janne', u'Siv', u'Sigrid',
-               u'Karoline', u'Karen', u'Vilde', u'Martine', u'Tonje', u'Andrea',
-               u'Sofie', u'Torill', u'Synnøve', u'Rita', u'Jenny', u'Cathrine',
-               u'Elise', u'Maren', u'Hanna']
-    menn = [u'Jan', u'Per', u'Bjørn', u'Ole', u'Lars', u'Kjell', u'Knut', u'Arne',
-        u'Svein', u'Thomas', u'Hans', u'Geir', u'Tor', u'Morten', u'Terje', u'Odd',
-        'Erik', u'Martin', u'Andreas', u'John', u'Anders', u'Rune', u'Trond', u'Tore',
-        u'Daniel', u'Jon', u'Kristian', u'Marius', u'Tom', u'Harald', u'Olav', u'Stian',
-        u'Magnus', u'Gunnar', u'Rolf', u'Øyvind', u'Espen', u'Leif', u'Henrik',
-        u'Fredrik', u'Nils', u'Christian', u'Eirik', u'Helge', u'Jonas', u'Håkon',
-        u'Einar', u'Steinar', u'Frode', u'Øystein', u'Jørgen', u'Arild', u'Kjetil',
-        u'Kåre', u'Alexander', u'Petter', u'Frank', u'Stein', u'Johan', u'Kristoffer',
-        u'Dag', u'Mathias', u'Ivar', u'Stig', u'Vidar', u'Kenneth', u'Ola', u'Tommy',
-        u'Pål', u'Magne', u'Karl', u'Sverre', u'Håvard', u'Roger', u'Emil', u'Egil',
-        u'Simen', u'Alf', u'Eivind', u'Sondre', u'Robert', u'Adrian', u'Jens', u'Kim',
-        u'Vegard', u'Thor', u'Roy', u'Sebastian', u'Sander', u'Johannes', u'Tobias',
-        u'Sindre', u'Torbjørn', u'Erling', u'Roar', u'Finn', u'Asbjørn', u'Sigurd',
-        u'Reidar', u'Joakim']
+
     gruff = ["eirik", u"Væinø", "Linn", "Ola Irene", "Kim", "Kim Are",
-        "Jenny Oluf Thomsen", "Eirik", "Erika", "Erika Olsen", "Karlsen",
-        u"Åse Finnbogadottir", u"råtte", "stol"]
+             "Jenny Oluf Thomsen", "Eirik", "Erika", "Erika Olsen", "Karlsen",
+             u"Åse Finnbogadottir", u"råtte", "stol"]
 
     for name__ in testnavn:
         a = names.get_gender(name__)
@@ -244,7 +230,7 @@ if __name__ == '__main__':
         a = names.get_gender(n__)
         print(a[0] + "\t ble \t" + a[1] + "\t -->" + a[2])
 
-    # print "\n\n\nSå unisex navnene:\n"
-    # for n in names.begge:
-    #     a = names.get_gender(n)
-    #     print a[0] + "\t ble \t" + a[1] + "\t -->" + a[2]
+    print("\n\n\nSå unisex navnene:\n")
+    for n in names.begge:
+        a = names.get_gender(n)
+        print(a[0] + "\t ble \t" + a[1] + "\t -->" + a[2])
