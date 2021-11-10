@@ -152,28 +152,29 @@ class Genie:
 
     def last_jenter(self) -> List[str]:
         jenter = open(jentenavn_file)
-        self.jente_liste = []
+        tmp_jente_liste = []
         for j in jenter:
-            self.jente_liste.append(j.strip().capitalize())  # .decode("utf8")
+            tmp_jente_liste.append(j.strip().capitalize())  # .decode("utf8")
         logging.info(" %s jente-navn, hvorav unike: %s" %
-                     (len(self.jente_liste), len(list(set(self.jente_liste)))))
-        return list(set(self.jente_liste))
+                     (len(tmp_jente_liste), len(list(set(tmp_jente_liste)))))
+        return list(set(tmp_jente_liste))
 
     def last_gutter(self) -> List[str]:
         gutter = open(guttenavn_file)
-        self.gutte_liste = []
+        tmp_gutte_liste = []
         for g in gutter:
-            self.gutte_liste.append(g.strip().capitalize())  # .decode("utf8")
+            tmp_gutte_liste.append(g.strip().capitalize())  # .decode("utf8")
+
         logging.info(" %s gutte-navn, hvorav unike: %s" %
-                     (len(self.gutte_liste), len(list(set(self.gutte_liste)))))
-        return list(set(self.gutte_liste))
+                     (len(tmp_gutte_liste), len(list(set(tmp_gutte_liste)))))
+        return list(set(tmp_gutte_liste))
 
     def last_etternavn(self) -> List[str]:
         etternavn_file = open(etter_navn_file)
         etternavn = []
         for e in etternavn_file:
             etternavn.append(e.strip().capitalize())
-        return etternavn
+        return list(set(etternavn))
 
     def predict_gender(self, name: str):
         """Takes name, returns tuple
@@ -202,9 +203,11 @@ class Genie:
 
         # grab first bit of name string, that should be first name, in caps please
         name_ = clean_name_str.split()[0].strip().capitalize()
-        print("name_", name_, "len", len(name_), type(name_))
+        #print("name_", name_, "len", len(name_), type(name_))
         mode = 'undecided'  # assumed until list lookup is found
 
+        #print("name_", name_, len(name_), type(name_), "fra ", name)
+        # print(self.gutter)
         if name_ in self.jenter:
             gender = Gender.kvinne
             #gender = 'kvinne'
@@ -263,7 +266,7 @@ class Genie:
                     break
 
         # Vi kjenner ikke dette navnet fra før:
-        else:
+        if found_gender == False:
             if verbose:
                 print("Finner ingenting i listene, kjør AI")
                 print(f"resultat av '{name_}':  {self.predict_gender(name_)}")
@@ -273,11 +276,7 @@ class Genie:
             mode = 'predictor'
             if self.predict_gender(name_) == 'F':
                 gender = Gender.kvinne
-
-                # return (name, u"kvinne", u'predictor')
-
             else:
-                # return (name, u"mann", u'predictor')
                 gender = Gender.mann
         return AssumedGender(name, gender.name, mode, clean_name_str)
 
@@ -296,7 +295,7 @@ if __name__ == '__main__':
              u"Åse Finnbogadottir", u"råtte", "stol"]
 
     for name__ in testnavn:
-        a = names.get_gender(name__)
+        a = names.get_gender(name__, verbose=True)
         print(name__ + "\t ble \t" + str(a[1]) + "\t -->\t" + a[2])
 
     for n__ in gruff:

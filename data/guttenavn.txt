@@ -5,6 +5,7 @@ Aaron
 Aasmund
 Abbas
 Abdi
+Abid
 Abdirahman
 Abdul
 Abdulkadir
@@ -1122,6 +1123,7 @@ Hildibrandur
 Hilding
 Hilmar
 Hilmir
+Himanshu
 Hinrik
 Hjalgrímur
 Hjalmar
@@ -1629,6 +1631,7 @@ Louis
 Lourenço
 Love
 Lowe
+Lodve
 Loïs
 Loðin
 Luc
