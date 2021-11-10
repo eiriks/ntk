@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
-import urllib2, sys, re
+import string
+import urllib2
+import sys
+import re
 from bs4 import BeautifulSoup
 # next time use: http://www.crummy.com/software/BeautifulSoup/bs4/doc/#parsing-only-part-of-a-document to only parse a prt of the document...
 
@@ -12,14 +15,13 @@ from bs4 import BeautifulSoup
 #
 
 
-
 base_url = 'http://www.norskenavn.no/guttenavn.php?bokstav='
-post_url = '&antallnavn=100' # 100 eller fler har navnet
+post_url = '&antallnavn=100'  # 100 eller fler har navnet
 navn = []
 
 
 def scrape(url):
-    #print url
+    # print url
     soup = BeautifulSoup(urllib2.urlopen(url).read())
     for gnavn in soup.find_all("a", {"class": "guttenavn"}):
         if "./navn.php" in gnavn['href']:
@@ -27,26 +29,24 @@ def scrape(url):
                 if gnavn.text not in navn:
                     navn.append(gnavn.text)
             except:
-                print gnavn
-    #return navn
+                print(gnavn)
+    # return navn
+
 
 def save_gutter(navn):
     '''Excpects a set of navns'''
     with open('data/guttenavn_fra_norskenavn.txt', 'wb') as f:
-        #print type(navn), navn
+        # print type(navn), navn
         for navnet in sorted(navn):
             f.write(navnet.encode('utf-8') + '\n')
 
 
-
 # run A-Z (I'll do øæå manualy..)
-import string
 for letter in string.ascii_uppercase:
-#    if letter=="A" or letter =="B":
+    #    if letter=="A" or letter =="B":
     scrape(base_url+letter+post_url)
 
 save_gutter(navn)
-
 
 
 ####
@@ -55,11 +55,12 @@ save_gutter(navn)
 #
 ####
 base_url = 'http://www.norskenavn.no/jentenavn.php?bokstav='
-post_url = '&antallnavn=100' # 100 eller fler har navnet
+post_url = '&antallnavn=100'  # 100 eller fler har navnet
 navn_jente = []
 
+
 def scrape_jente(url):
-    #print url
+    # print url
     soup = BeautifulSoup(urllib2.urlopen(url).read())
     for jnavn in soup.find_all("a", {"class": "jentenavn"}):
         if "./navn.php" in jnavn['href']:
@@ -67,18 +68,19 @@ def scrape_jente(url):
                 if jnavn.text not in navn_jente:
                     navn_jente.append(jnavn.text)
             except:
-                print jnavn
+                print(jnavn)
+
 
 def save_gjenter(navn_jente):
     '''Excpects a set of navns'''
     with open('data/jentenavn_fra_norskenavn.txt', 'wb') as f:
-        #print type(navn_jente), navn_jente
+        # print type(navn_jente), navn_jente
         for navnet in sorted(navn_jente):
             f.write(navnet.encode('utf-8') + '\n')
 
-import string
+
 for letter in string.ascii_uppercase:
-    #if letter=="A" or letter =="B":
+    # if letter=="A" or letter =="B":
     scrape_jente(base_url+letter+post_url)
 
 save_gjenter(navn_jente)

@@ -17,7 +17,7 @@ def strip_punctuation(name: str) -> str:
 
 
 def split_numeric(name: str) -> str:
-    res = re.split('(\d+)', name)
+    res = re.split(r'(\d+)', name)
     return " ".join(res)
 
 

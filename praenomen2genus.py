@@ -23,12 +23,17 @@ To-do:
 
 """
 # import os
+from enum import Enum     # for enum34, or the stdlib version
 import os
 import sys
 import pickle
 import random
 from typing import List, Tuple
 from nltk import NaiveBayesClassifier, classify
+from collections import namedtuple
+import typing
+
+from nltk.tree import Tree
 
 from aux_functions import clean_name
 
@@ -39,6 +44,18 @@ dir = os.path.dirname(__file__)
 pickle_file = os.path.join(dir, 'data/no_names.pickle')
 jentenavn_file = os.path.join(dir, "data/jentenavn.txt")
 guttenavn_file = os.path.join(dir, "data/guttenavn.txt")
+etter_navn_file = os.path.join(dir, "data/etternavn.txt")
+
+# from aenum import Enum  # for the aenum version
+Gender = Enum('Gender', 'mann kvinne ukjent')
+
+# AssumedGender = namedtuple(
+#     'AssumedGender', ['name:str', 'gender:', 'mode', 'assumed_name'])
+
+AssumedGender = typing.NamedTuple("AssumedGender", [('name', str),
+                                                    ('gender', str),
+                                                    ('mode', str),
+                                                    ('assumed_name', str)])
 
 
 class genderPredictor():
@@ -119,6 +136,7 @@ class Genie:
         # remove names that occur in both lists
         self.jenter = [x for x in self.jenter if x not in self.begge]
         self.gutter = [x for x in self.gutter if x not in self.begge]
+        self.etternavn = self.last_etternavn()
 
         # set up the predictor
         self.gp = genderPredictor()
@@ -136,7 +154,7 @@ class Genie:
         jenter = open(jentenavn_file)
         self.jente_liste = []
         for j in jenter:
-            self.jente_liste.append(j.rstrip())  # .decode("utf8")
+            self.jente_liste.append(j.strip().capitalize())  # .decode("utf8")
         logging.info(" %s jente-navn, hvorav unike: %s" %
                      (len(self.jente_liste), len(list(set(self.jente_liste)))))
         return list(set(self.jente_liste))
@@ -145,10 +163,17 @@ class Genie:
         gutter = open(guttenavn_file)
         self.gutte_liste = []
         for g in gutter:
-            self.gutte_liste.append(g.rstrip())  # .decode("utf8")
+            self.gutte_liste.append(g.strip().capitalize())  # .decode("utf8")
         logging.info(" %s gutte-navn, hvorav unike: %s" %
                      (len(self.gutte_liste), len(list(set(self.gutte_liste)))))
         return list(set(self.gutte_liste))
+
+    def last_etternavn(self) -> List[str]:
+        etternavn_file = open(etter_navn_file)
+        etternavn = []
+        for e in etternavn_file:
+            etternavn.append(e.strip().capitalize())
+        return etternavn
 
     def predict_gender(self, name: str):
         """Takes name, returns tuple
@@ -161,13 +186,13 @@ class Genie:
         """
         return self.gp.classify(name)
 
-    def get_gender(self, name: str, verbose: bool = False) -> Tuple[str, str, str]:
+    def get_gender(self, name: str, verbose: bool = False) -> AssumedGender:
         '''Assume standard navn: Firstname Lastname. '''
         # should expect unicode
         # when data is dread from files, its... something else..
         # name = name.decode("utf8")      # Her forventer vi noen André-er og Åshilder og Øyvinder..
         # what if input is None, NULL, etc?
-
+        found_gender = False
         clean_name_str = clean_name(name)
         # grab only the first part (if more)
         if verbose:
@@ -176,42 +201,90 @@ class Genie:
             print(f"{name } --> {clean_name_str}")
 
         # grab first bit of name string, that should be first name, in caps please
-        name = clean_name_str.split()[0].capitalize()
+        name_ = clean_name_str.split()[0].strip().capitalize()
+        print("name_", name_, "len", len(name_), type(name_))
+        mode = 'undecided'  # assumed until list lookup is found
 
-        if name in self.jenter:
+        if name_ in self.jenter:
+            gender = Gender.kvinne
+            #gender = 'kvinne'
+            mode = 'list_lookup'
+            found_gender = True
             if verbose:
-                print(name, " er en kvinne")
-            return (name, u"kvinne", u'list_lookup')
-        elif name in self.gutter:
-            if verbose:
-                print(name, "er en mann")
-            return (name, u"mann", u'list_lookup')
+                print("fant kvinne: ", name_)
 
-        elif name in self.begge:
+        # here it fails on names like Grunde and Audun. Why?
+        # it ends up predicting all these now?
+
+        elif name_ in self.gutter:
+            gender = Gender.mann
+            mode = 'list_lookup'
+            found_gender = True
+
+        elif name_ in self.begge:
             if verbose:
                 print(
                     "Navn finnes i ordlister for både kvinne og mann. prediksjon må til")
             # Navnet er både registrert som Gutte- og jentenavn:
             # Bruk AI
             # return (name, u"begge")
-            if self.predict_gender(name) == 'F':
-                return (name, u"kvinne", u'predictor')
+            mode = 'predictor'
+            if self.predict_gender(name_) == 'F':
+                gender = Gender.kvinne
             else:
-                return (name, u"mann", u'predictor')
+                gender = Gender.mann
+            found_gender = True
 
+        # Før vi predikerer, la oss gjøre som mennesker, sjekk om noe i det hele tatt
+        # her gir oss noen hint: 'Lan Marie Nguyen Berg' har 'Marie' i seg.
+        #  'Andersen Arne' burde teste Arne før vi predikerer Andersen
+        # det er nok
+        # if name_ in self.etternavn:
+
+        if found_gender == False and len(clean_name_str.split()) > 1:
+            if verbose:
+                print("Ittererer over navn")
+            for subnavn in clean_name_str.split():
+                # første treff vinner? ok
+                cap_name = subnavn.capitalize()
+                winner = False
+                if cap_name in self.etternavn:
+                    continue  # skip last names.
+                if cap_name in self.jenter:
+                    gender = Gender.kvinne
+                    found_gender = True
+                elif cap_name in self.gutter:
+                    gender = Gender.mann
+                    found_gender = True
+                if found_gender:
+                    mode = 'list_lookup'
+                    if verbose:
+                        print("Fant noe inni navnet i en liste")
+                    break
+
+        # Vi kjenner ikke dette navnet fra før:
         else:
-            # Vi kjenner ikke dette navnet fra før:
+            if verbose:
+                print("Finner ingenting i listene, kjør AI")
+                print(f"resultat av '{name_}':  {self.predict_gender(name_)}")
+                # print(self.gutter)
             # Bruk AI
             # return (name, u"ikke funnet, kjør AI eller flipp en mynt")
-            if self.predict_gender(name) == 'F':
-                return (name, u"kvinne", u'predictor')
+            mode = 'predictor'
+            if self.predict_gender(name_) == 'F':
+                gender = Gender.kvinne
+
+                # return (name, u"kvinne", u'predictor')
+
             else:
-                return (name, u"mann", u'predictor')
+                # return (name, u"mann", u'predictor')
+                gender = Gender.mann
+        return AssumedGender(name, gender.name, mode, clean_name_str)
 
 
 if __name__ == '__main__':
     names = Genie()
-    print(names.get_gender("Kari Marie Nilsen-Olsen"))
+    # print(names.get_gender("Kari Marie Nilsen-Olsen"))
 
     print("\n\n\nNorske navn: \n")
     testnavn = ["Sindre Granum", u"Pål", u"Øyvind", u"André", "Kim", "Linn",
@@ -224,13 +297,13 @@ if __name__ == '__main__':
 
     for name__ in testnavn:
         a = names.get_gender(name__)
-        print(name__ + "\t ble \t" + a[1] + "\t -->\t" + a[2])
+        print(name__ + "\t ble \t" + str(a[1]) + "\t -->\t" + a[2])
 
     for n__ in gruff:
         a = names.get_gender(n__)
-        print(a[0] + "\t ble \t" + a[1] + "\t -->" + a[2])
+        print(a[0] + "\t ble \t" + str(a[1]) + "\t -->" + a[2])
 
     print("\n\n\nSå unisex navnene:\n")
     for n in names.begge:
         a = names.get_gender(n)
-        print(a[0] + "\t ble \t" + a[1] + "\t -->" + a[2])
+        print(a[0] + "\t ble \t" + str(a[1]) + "\t -->" + a[2])

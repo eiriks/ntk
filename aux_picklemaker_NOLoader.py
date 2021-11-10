@@ -6,7 +6,6 @@ NOLoader.py
 import os
 import sys
 #import re
-import urllib2
 from zipfile import ZipFile
 import csv
 import pickle
@@ -109,22 +108,6 @@ def getNameList():
     # print '%d male names loaded, %d female names loaded'%(len(names[0]),len(names[1]))
 
     return names
-
-
-def downloadNames():
-    """ function to download zipfile of names data"""
-    pass
-    # response = requests.get('https://docs.google.com/spreadsheet/pub?key=0AgAXDJuvjySMdDNyNlc0RGh1N19jYTZ0ajNvTTRqYlE&output=csv')
-    # response2 = requests.get('https://docs.google.com/spreadsheet/pub?key=0AgAXDJuvjySMdDNyNlc0RGh1N19jYTZ0ajNvTTRqYlE&single=true&gid=1&output=csv')
-    # assert response.status_code == 200, 'Wrong status code'
-    # response2.raise_for_status()
-    # print response.content
-    # print response2.content
-    # # u = urllib2.urlopen('https://github.com/downloads/sholiday/genderPredictor/names.zip')
-    # localFile = open('no_names.zip', 'w')
-    # localFile.write(response.content.text) # jentene
-    # localFile.write(response2.content.text) # guttene
-    # localFile.close()
 
 
 def extractNamesDict():
