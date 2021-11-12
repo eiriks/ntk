@@ -19,5 +19,5 @@ def test_easy_boys_names():
             u'Sindre', u'Torbjørn', u'Erling', u'Roar', u'Finn', u'Asbjørn', u'Sigurd',
             u'Reidar', u'Joakim', "Grunde", 'Audun']
     for m in menn:
-        print(g.get_gender(m))
+        # print(g.get_gender(m))
         assert g.get_gender(m)[1] == 'mann'

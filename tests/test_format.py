@@ -7,8 +7,12 @@ g = Genie()
 def test_multiname():
     """ if one of these are a known name, use that: 'Lan Marie Nguyen Berg'
     """
-    test = 'Lan Marie Nguyen Berg'
-    assert g.get_gender(test, verbose=True)[1] == 'kvinne'
+
+    assert g.get_gender('Lan Marie Nguyen Berg', verbose=True)[1] == 'kvinne'
+    assert g.get_gender("Ikke-navn nei Ola Etternavn",
+                        verbose=True)[1] == 'mann'
+    assert g.get_gender("Ukjent Ukjent Christoffer Etternavn",
+                        verbose=True)[1] == 'mann'
 
 
 def test_known_lastname_first():
