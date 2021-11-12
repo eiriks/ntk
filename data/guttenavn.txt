@@ -5,6 +5,7 @@ Aaron
 Aasmund
 Abbas
 Abdi
+Abid
 Abdirahman
 Abdul
 Abdulkadir
@@ -208,6 +209,7 @@ Astor
 Atle
 Atli
 Attilio
+Audun
 Audun
 August
 Augustinus
@@ -612,7 +614,6 @@ Eivind
 Eivindur
 Eldar
 Eldbjørn
-Eli
 Elia
 Eliah
 Elian
@@ -1121,6 +1122,7 @@ Hildibrandur
 Hilding
 Hilmar
 Hilmir
+Himanshu
 Hinrik
 Hjalgrímur
 Hjalmar
@@ -1628,6 +1630,7 @@ Louis
 Lourenço
 Love
 Lowe
+Lodve
 Loïs
 Loðin
 Luc
@@ -2560,6 +2563,7 @@ Torgrímur
 Torje
 Torjus
 Torkel
+Torkell
 Torkil
 Torkild
 Torkjell

@@ -31,6 +31,11 @@ Navnet `Eirik` ble funnet i listen, mens `Ulerikka` ikke ligger i listen, men bl
 pip3 install git+https://github.com/eiriks/praenomen2genus.git
 ```
 
+### Dev install
+```
+git clone <url>
+python -m pip install --editable . --user
+``
 
 Prosjektet er basert på løse tråder herfra: https://github.com/eiriks/genderPredictor
 

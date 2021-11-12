@@ -21,6 +21,7 @@ Adelaide
 Adele
 Adelen
 Adelheid
+Afshan
 Adina
 Adine
 Adriana
@@ -654,6 +655,7 @@ Eleanor
 Elen
 Elena
 Eleonora
+Eleonore
 Elfrid
 Elfrida
 Eli
@@ -1145,6 +1147,7 @@ Ine
 Ines
 Inez
 Inga
+Ingalill
 Ingebjørg
 Ingeborg
 Ingegerd
@@ -1357,6 +1360,7 @@ Kaarina
 Kaat
 Kacey
 Kacie
+Kaci
 Kady
 Kaia
 Kaisa
@@ -1400,6 +1404,7 @@ Kathleen
 Kathrin
 Kathrine
 Kathryn
+Kathy
 Katie
 Katti
 Katinka
@@ -1495,6 +1500,7 @@ Laila
 Lajla
 Lalie
 Laly
+Lan
 Lana
 Lara
 Larissa
@@ -2246,6 +2252,7 @@ Saskia
 Savannah
 Scarlett
 Sebastiána
+Seher
 Selena
 Selin
 Selina

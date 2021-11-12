@@ -1,10 +1,10 @@
-from praenomen2genus import praenomen2genus
+from .context import Genie
+g = Genie()
 
 
-def test_easy_girls_names():
-    g = praenomen2genus.Genie()
+def test_easy_boys_names():
 
-    menn = [u'Jan', u'Per', u'Bjørn', u'Ole', u'Lars', u'Kjell', u'Knut', u'Arne',
+    menn = [u'Jan', u'Per', u'Bjørn', 'Ole', u'Ole', u'Lars', u'Kjell', u'Knut', u'Arne',
             u'Svein', u'Thomas', u'Hans', u'Geir', u'Tor', u'Morten', u'Terje', u'Odd',
             'Erik', u'Martin', u'Andreas', u'John', u'Anders', u'Rune', u'Trond', u'Tore',
             u'Daniel', u'Jon', u'Kristian', u'Marius', u'Tom', u'Harald', u'Olav', u'Stian',
@@ -17,7 +17,7 @@ def test_easy_girls_names():
             u'Simen', u'Alf', u'Eivind', u'Sondre', u'Robert', u'Adrian', u'Jens', u'Kim',
             u'Vegard', u'Thor', u'Roy', u'Sebastian', u'Sander', u'Johannes', u'Tobias',
             u'Sindre', u'Torbjørn', u'Erling', u'Roar', u'Finn', u'Asbjørn', u'Sigurd',
-            u'Reidar', u'Joakim']
-    for w in menn:
-        print(g.get_gender(w))
-        assert g.get_gender(w)[1] == 'mann'
+            u'Reidar', u'Joakim', "Grunde", 'Audun']
+    for m in menn:
+        # print(g.get_gender(m))
+        assert g.get_gender(m)[1] == 'mann'

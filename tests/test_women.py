@@ -1,8 +1,9 @@
-from praenomen2genus import praenomen2genus
+from .context import Genie
+g = Genie()
 
 
 def test_easy_girls_names():
-    g = praenomen2genus.Genie()
+    errors = []
     women = [u'Anne', u'Inger', u'Kari', u'Marit', u'Ingrid', u'Liv', u'Eva',
              u'Berit', u'Astrid', u'Bjørg', u'Hilde', u'Anna', u'Solveig',
              u'Marianne', u'Randi', u'Ida', u'Nina', u'Maria', u'Elisabeth',
@@ -19,7 +20,9 @@ def test_easy_girls_names():
              u'Ingeborg', u'Kjersti', u'Janne', u'Siv', u'Sigrid',
              u'Karoline', u'Karen', u'Vilde', u'Martine', u'Tonje', u'Andrea',
              u'Sofie', u'Torill', u'Synnøve', u'Rita', u'Jenny', u'Cathrine',
-             u'Elise', u'Maren', u'Hanna']
+             u'Elise', u'Maren', u'Hanna', 'Jørun']
     for w in women:
-        print(g.get_gender(w))
-        assert g.get_gender(w)[1] == 'kvinne'
+        # print(g.get_gender(w))
+        if g.get_gender(w)[1] != 'kvinne':
+            errors.append(f"{w} ble ikke kvinne {g.get_gender(w)}")
+    assert not errors, "errors occurred :\n{}".format("\n".join(errors))
