@@ -3,7 +3,8 @@ __pycache__/
 *.py[cod]
 
 *.zip
-nrk_names2gender.py
+#nrk_names2gender.py
+
 data/etternavn.txt
 
 faset_ut/*

@@ -1,5 +1,6 @@
-from .context import Genie
-g = Genie()
+from .context import Ntk
+
+g = Ntk()
 
 
 def test_easy_boys_names():

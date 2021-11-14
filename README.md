@@ -1,25 +1,24 @@
-# praenomen2genus
-<dl>
-  <dt>praenomen</dt>
-  <dd>fornavn</dd>
-
-  <dt>genus</dt>
-  <dd>kjønn</dd>
-</dl>
+# NTL - Navn Til Kjønn
 Quick-fix for å konvertere norske egennavn til kjønn (mann/kvinne).
-Siste versjon av kode som tidligere het `Navn-til-kj-nn`.
 
+Målet med denne versjonen av koden er bare å forenkle slik at dette kan brukes fort-og-gæli som et bedre-enn-ingenting verktøy. Et typisk scenario er at du har en lang liste med navn og trenger å finne kjønnsfordelingen mellom dem.
 
-Målet med denne versjonen av koden er bare å forenkle slik at dette kan brukes fort-og-gæli som et bedre-enn-ingenting verktøy.
+Hva programmet gjør:
+Først sjekkes et navn opp mot navne-lister med navn etter kjønn. Om en kjent fornavn finnes blandt flere velges første treff.
+Hvis navnet ikke finnes i navnelistene, kjøres navnet gjennom en liten AI, som er trent på kjente norsk navn. 
+
 
 Omtrent slik er den ment å brukes:
 
 ```python
->>> from praenomen2genus import praenomen2genus
->>> genie = praenomen2genus.Genie()
->>> genie.get_gender("Eirik")
-(u'Eirik', 'man', 'list_lookup')
->>> genies.get_gender("Ulerikka")
+>>> from ntk import Ntk
+>>> ntk = Ntk()
+>>> ntk.get_gender("Eirik")
+# returnerer en Named Tuple:
+AssumedGender(input_name='Eirik', gender='mann', mode='list_lookup', assumed_name='Eirik')
+>>> ntk.get_gender("Eirik")[1]
+'mann'
+>>> ntk.get_gender("Ulerikka")
 (u'Ulerikka', 'kvinne', 'predictor')
 ```
 
@@ -28,7 +27,7 @@ Navnet `Eirik` ble funnet i listen, mens `Ulerikka` ikke ligger i listen, men bl
 
 # Installasjon
 ```bash
-pip3 install git+https://github.com/eiriks/praenomen2genus.git
+pip3 install git+https://github.com/eiriks/ntk.git
 ```
 
 ### Dev install

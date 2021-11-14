@@ -1,7 +1,7 @@
-from .context import Genie
+from .context import Ntk
 
 
-g = Genie()
+g = Ntk()
 
 
 def test_multiname():

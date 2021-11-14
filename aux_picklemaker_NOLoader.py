@@ -29,8 +29,8 @@ def createNamesPickle():
               'no_names.pickle does not exist, generating')
 
         #from name2gender import name2gender
-        from praenomen2genus import praenomen2genus
-        obj = praenomen2genus()
+        from ntk import Ntk
+        obj = Ntk()
 
         femaleNames = obj.jenter
         maleNames = obj.gutter

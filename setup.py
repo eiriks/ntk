@@ -1,13 +1,13 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='praenomen2genus',
-    version='0.2.0',
+    name='ntk',
+    version='0.3.0',
     author='Eirik Stavelin',
     packages=find_packages(),  # ['towelstuff',],
     # include_package_data=True, # virker ikke
-    package_data={'praenomen2genus': ['data/*.txt', 'data/*.pickle']},
-    url='https://github.com/eiriks/praenomen2genus',
+    package_data={'ntk': ['data/*.txt', 'data/*.pickle']},
+    url='https://github.com/eiriks/ntk',
     license='MIT',
     long_description=open('README.md').read(),
     classifiers=[

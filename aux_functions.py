@@ -1,4 +1,5 @@
 import re
+import pandas as pd
 import string
 
 
@@ -26,3 +27,14 @@ def clean_name(name: str) -> str:
     name = split_numeric(name)
     clean_name = strip_punctuation(name)
     return clean_name
+
+
+def create_etternavn_file_from_wikipedia():
+    _ = pd.read_html("https://no.wikipedia.org/wiki/Liste_over_norske_etternavn",
+                     index_col=0, skiprows=0)[0]
+
+    _.sort_values(by='Navn', inplace=True)
+
+    with open("data/etternavn.txt", 'w') as file:
+        for n in _.itertuples():
+            file.write(f"{n.Navn}\n")

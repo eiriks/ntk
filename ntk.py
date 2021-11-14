@@ -46,13 +46,10 @@ jentenavn_file = os.path.join(dir, "data/jentenavn.txt")
 guttenavn_file = os.path.join(dir, "data/guttenavn.txt")
 etter_navn_file = os.path.join(dir, "data/etternavn.txt")
 
-# from aenum import Enum  # for the aenum version
+
 Gender = Enum('Gender', 'mann kvinne ukjent')
 
-# AssumedGender = namedtuple(
-#     'AssumedGender', ['name:str', 'gender:', 'mode', 'assumed_name'])
-
-AssumedGender = typing.NamedTuple("AssumedGender", [('name', str),
+AssumedGender = typing.NamedTuple("AssumedGender", [('input_name', str),
                                                     ('gender', str),
                                                     ('mode', str),
                                                     ('assumed_name', str)])
@@ -126,7 +123,7 @@ class genderPredictor():
         }
 
 
-class Genie:
+class Ntk:
     ''' class to lookup gender from First names in Norwegian'''
 
     def __init__(self):
@@ -177,7 +174,7 @@ class Genie:
         return list(set(etternavn))
 
     def predict_gender(self, name: str):
-        """Takes name, returns tuple
+        """Takes name, returns tuple, forces ML method
 
         Args:
             name (str): navn. eg. 'Eirik'
@@ -282,7 +279,7 @@ class Genie:
 
 
 if __name__ == '__main__':
-    names = Genie()
+    names = Ntk()
     # print(names.get_gender("Kari Marie Nilsen-Olsen"))
 
     print("\n\n\nNorske navn: \n")

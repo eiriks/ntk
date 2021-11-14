@@ -1,8 +1,9 @@
 import os
 import pandas as pd
 
-from .context import Genie
-g = Genie()
+from .context import Ntk
+
+g = Ntk()
 
 # wtf? Hva gjetter man her? ssb til liten hjelp
 SKIP_THESE_FIRST_NAMES = {
