@@ -34,7 +34,9 @@ pip3 install git+https://github.com/eiriks/ntk.git
 ```
 git clone <url>
 python -m pip install --editable . --user
-``
+```
+
+
 
 Prosjektet er basert på løse tråder herfra: https://github.com/eiriks/genderPredictor
 
@@ -218,7 +220,7 @@ print("Riktige: {} og feil {} gir en prosent på {}%".format(riktige, feil, roun
 
 ```python
 Test med gruttenavn fra wikipedia:
-	 -> Man, feil: Thanh ('Thanh', 'kvinne', 'predictor')
+	 -> Mann, feil: Thanh ('Thanh', 'kvinne', 'predictor')
 Riktige: 621 og feil: 1 gir en prosent på 99.84%
 
 Test med jentenavn fra wikipedia:

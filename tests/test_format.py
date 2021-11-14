@@ -1,6 +1,5 @@
 from .context import Ntk
 
-
 g = Ntk()
 
 
