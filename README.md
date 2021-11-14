@@ -1,4 +1,4 @@
-# NTL - Navn Til Kjønn
+# NTK - Navn Til Kjønn
 Quick-fix for å konvertere norske egennavn til kjønn (mann/kvinne).
 
 Målet med denne versjonen av koden er bare å forenkle slik at dette kan brukes fort-og-gæli som et bedre-enn-ingenting verktøy. Et typisk scenario er at du har en lang liste med navn og trenger å finne kjønnsfordelingen mellom dem.
