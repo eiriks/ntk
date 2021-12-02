@@ -1,4 +1,8 @@
-from .context import Ntk
+# from .context import Ntk
+# g = Ntk()
+
+from ntk import Ntk
+
 g = Ntk()
 
 

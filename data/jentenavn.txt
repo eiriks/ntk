@@ -123,6 +123,7 @@ Anaëlle
 Anaïs
 Anbjørg
 Andrea
+Andri
 Andrine
 Ane
 Anea
@@ -312,6 +313,7 @@ Bella
 Benadikta
 Benedicte
 Benedikte
+Benny
 Benita
 Bente
 Benthe
@@ -1297,6 +1299,7 @@ Jona
 Jonna
 Jonnhild
 Jopie
+Joran
 Jorid
 Jorja
 Jorun
@@ -1429,6 +1432,7 @@ Kelly
 Kelsey
 Kelsi
 Kelsie
+Kenny
 Kenza
 Kenzie
 Kerri
@@ -1517,6 +1521,7 @@ Lea
 Leah
 Leana
 Leanne
+Lee
 Leia
 Leigh
 Leikny
@@ -1858,6 +1863,7 @@ Mia
 Michaela
 Michelle
 Michèle
+Michele
 Mie
 Mien
 Mika
@@ -1999,6 +2005,7 @@ Noor
 Noora
 Nora
 Norah
+Nore
 Norma
 Norun
 Norunn
@@ -2121,6 +2128,7 @@ Randarsól
 Randfríð
 Randi
 Randið
+Randy
 Rania
 Ranja
 Rannfríð
@@ -2357,6 +2365,7 @@ Solvår
 Solène
 Sonia
 Sonja
+Sonny
 Sophia
 Sophie
 Soraya
@@ -2525,6 +2534,8 @@ Toini
 Tomasia
 Tomine
 Tone
+Tonni
+Tonny
 Tonje
 Tora
 Torbera

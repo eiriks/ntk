@@ -11,6 +11,13 @@ faset_ut/*
 # C extensions
 *.so
 
+tests/context.py
+
+#tests/explorations/*.ipynb
+
+
+.vscode
+
 # Distribution / packaging
 .Python
 env/
