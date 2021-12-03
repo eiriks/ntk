@@ -93,17 +93,18 @@ def fix():
 
 def legg_til_flere():
     # henter flere herfra http://ssb.no/befolkning/statistikker/navn/aar/2015-01-27?fane=tabell#content
-    m3 = codecs.open(
-        'data/ssb_Guttenavn_alfabetisk_2005-2014.csv', 'r', 'utf-8')
-    for n in itertools.islice(m3, 1, None):
-        navn = n.split(";")[0]
-        # print navn
+    # m3 = codecs.open(
+    #     'data/ssb_Guttenavn_alfabetisk_2005-2014.csv', 'r', 'utf-8')
+    # for n in itertools.islice(m3, 1, None):
+    #     navn = n.split(";")[0]
+    #     # print navn
 
-    m4 = codecs.open(
-        'data/ssb_Jentenavn_alfabetisk_2005-2014.csv', 'r', 'utf-8')
-    for n in itertools.islice(m4, 1, None):
-        navn = n.split(";")[0]
-        # print navn
+    # m4 = codecs.open(
+    #     'data/ssb_Jentenavn_alfabetisk_2005-2014.csv', 'r', 'utf-8')
+
+    # for n in itertools.islice(m4, 1, None):
+    #     navn = n.split(";")[0]
+    #     # print navn
 
     # Utnes navnelister
     nye_kvinner = []

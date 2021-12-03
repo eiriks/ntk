@@ -1,2 +1,3 @@
+from ntk import Ntk
 __version__ = '0.3.1'
-from ntk import *
+__all__ = [Ntk]

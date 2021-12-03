@@ -5,11 +5,12 @@ NOLoader.py
 """
 import os
 import sys
-#import re
+from typing import Dict, List
+# import re
 from zipfile import ZipFile
 import csv
 import pickle
-import requests
+# import requests
 import random
 
 import logging  # DEBUG, INFO, WARNING, ERROR, CRITICAL
@@ -28,7 +29,6 @@ def createNamesPickle():
         print('data/'+str(random.random()) +
               'no_names.pickle does not exist, generating')
 
-        #from name2gender import name2gender
         from ntk import Ntk
         obj = Ntk()
 
@@ -112,9 +112,9 @@ def getNameList():
 
 def extractNamesDict():
     zf = ZipFile('data/no_names.zip', 'r')
-    filenames = zf.namelist()
+    # filenames = zf.namelist()
 
-    names = dict()
+    names: Dict[str, List[int]] = dict()
     genderMap = {'data/no_names/boys.csv': 0,
                  'data/no_names/girls.csv': 1}  # genderMap={'M':0,'F':1}
     # genderMap={'M':0,'F':1}
@@ -124,7 +124,7 @@ def extractNamesDict():
     for filename in ['data/guttenavn.txt', 'data/jentenavn.txt']:  # filenames:
         # print filename # osx creates fucking anoying __MACOSX folders!! http://stackoverflow.com/questions/10924236/mac-zip-compress-without-macosx-folder
         file = zf.open(filename, 'rU')
-        rows = csv.reader(file, delimiter=',')
+        rows = csv.reader(str(file), delimiter=',')
 
         first_itteration = True
         for row in rows:
@@ -136,12 +136,12 @@ def extractNamesDict():
                 gender = genderMap[filename]   # 1
                 # sum list when ':' are removed
                 # 132
-                count = sum(map(int, [i for i in row[1:] if i is not ':']))
+                count = sum(map(int, [i for i in row[1:] if i != ':']))
             else:
                 first_itteration = False      # set flag
                 continue                    # skip rest of itteration
 
-            if not names.has_key(name):
+            if name not in names:  # .has_key():
                 names[name] = [0, 0]
             # Navn [antall menn, antall kvinner]
             # print type(names[name][gender]), name, gender

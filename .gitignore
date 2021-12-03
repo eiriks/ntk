@@ -13,7 +13,7 @@ faset_ut/*
 
 tests/context.py
 
-#tests/explorations/*.ipynb
+tests/explorations/*.ipynb
 
 
 .vscode

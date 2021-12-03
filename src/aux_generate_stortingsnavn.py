@@ -3,7 +3,7 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 import requests
 import pandas as pd
-import sys
+# import sys
 
 
 def gender_string(inn: str) -> str:
@@ -33,7 +33,7 @@ def main():
     # bedre_folk = [Eneste_fornavn, fullt navn, kjønn]
     repr_base_url = "http://data.stortinget.no/eksport/representanter?stortingsperiodeid="  # "2009-2013"
 
-    #perioder = ["2009-2013"]
+    # perioder = ["2009-2013"]
     for periode in perioder:
         # print(repr_base_url+periode)#http://data.stortinget.no/eksport/representanter?stortingsperiodeid=2009-2013
         r = requests.get(repr_base_url+periode)
@@ -47,14 +47,14 @@ def main():
     # folk
     # len(folk)
     # len(set(folk))  # sorted(set(folk))
-    uniqe_fnames = list(set([n[0] for n in set(folk)]))
+    # uniqe_fnames = list(set([n[0] for n in set(folk)]))
     # len(uniqe_fnames)
 
     # lagre stortingsrepresentantene
     rep_df = pd.DataFrame.from_records(folk)
     rep_df.columns = ["Fornavn", "Fullt_navn", "kjønn"]
     rep_df.head()
-    #rep_df.to_csv(path_or_buf="praenomen2genus/data/stortingsrepresentantnavn.csv", sep='\t', encoding='utf-8', index=False)#
+    # rep_df.to_csv(path_or_buf="praenomen2genus/data/stortingsrepresentantnavn.csv", sep='\t', encoding='utf-8', index=False)#
     dato = datetime.now().strftime('%y-%m-%d')
     stortingsrepresentantnavn = rep_df
     pickle_name = f"data/stortings-navn/{dato}.pickle"

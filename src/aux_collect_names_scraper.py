@@ -3,7 +3,7 @@
 import string
 import urllib2
 import sys
-import re
+# import re
 from bs4 import BeautifulSoup
 # next time use: http://www.crummy.com/software/BeautifulSoup/bs4/doc/#parsing-only-part-of-a-document to only parse a prt of the document...
 

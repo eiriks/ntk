@@ -28,12 +28,12 @@ import os
 import sys
 import pickle
 import random
-from typing import List, Tuple
+from typing import List
 from nltk import NaiveBayesClassifier, classify
-from collections import namedtuple
+# from collections import namedtuple
 import typing
 
-from nltk.tree import Tree
+# from nltk.tree import Tree
 
 from aux_functions import clean_name
 
@@ -200,14 +200,14 @@ class Ntk:
 
         # grab first bit of name string, that should be first name, in caps please
         name_ = clean_name_str.split()[0].strip().capitalize()
-        #print("name_", name_, "len", len(name_), type(name_))
+        # print("name_", name_, "len", len(name_), type(name_))
         mode = 'undecided'  # assumed until list lookup is found
 
-        #print("name_", name_, len(name_), type(name_), "fra ", name)
+        # print("name_", name_, len(name_), type(name_), "fra ", name)
         # print(self.gutter)
         if name_ in self.jenter:
             gender = Gender.kvinne
-            #gender = 'kvinne'
+            # gender = 'kvinne'
             mode = 'list_lookup'
             found_gender = True
             if verbose:
@@ -241,13 +241,13 @@ class Ntk:
         # det er nok
         # if name_ in self.etternavn:
 
-        if found_gender == False and len(clean_name_str.split()) > 1:
+        if found_gender is False and len(clean_name_str.split()) > 1:
             if verbose:
                 print("Ittererer over navn")
             for subnavn in clean_name_str.split():
                 # første treff vinner? ok
                 cap_name = subnavn.capitalize()
-                winner = False
+                # winner = False
                 if cap_name in self.etternavn:
                     continue  # skip last names.
                 if cap_name in self.jenter:
@@ -263,7 +263,7 @@ class Ntk:
                     break
 
         # Vi kjenner ikke dette navnet fra før:
-        if found_gender == False:
+        if found_gender is False:
             if verbose:
                 print("Finner ingenting i listene, kjør AI")
                 print(f"resultat av '{name_}':  {self.predict_gender(name_)}")
