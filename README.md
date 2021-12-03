@@ -36,8 +36,9 @@ git clone <url>
 python -m pip install --editable . --user
 ```
 
+---
 
-
+## Bakgrunn
 Prosjektet er basert på løse tråder herfra: https://github.com/eiriks/genderPredictor
 
 Jeg har noe data på hvor nøyaktig dette er et-eller-annet sted, som jeg skal hoste opp neste gang jeg må rapportere nøyaktighet (som helt sikkert skjer en-gang snart).
